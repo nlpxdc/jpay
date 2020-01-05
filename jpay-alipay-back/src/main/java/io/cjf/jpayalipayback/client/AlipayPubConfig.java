@@ -4,15 +4,15 @@ import com.alipay.api.CertAlipayRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component
-public class AlipayConfig extends CertAlipayRequest {
+//@Component
+public class AlipayPubConfig extends CertAlipayRequest {
 
-    public AlipayConfig(@Value("${alipay.serverUrl}") String serverUrl,
-                        @Value("${alipay.appId}") String appId,
-                        @Value("${alipay.privateKey}") String privateKey,
-                        @Value("${alipay.certPath}") String certPath,
-                        @Value("${alipay.alipayPublicCertPath}") String alipayPublicCertPath,
-                        @Value("${alipay.rootCertPath}") String rootCertPath){
+    public AlipayPubConfig(@Value("${alipay.serverUrl}") String serverUrl,
+                           @Value("${alipay.appId}") String appId,
+                           @Value("${alipay.privateKey}") String privateKey,
+                           @Value("${alipay.certPath}") String certPath,
+                           @Value("${alipay.alipayPublicCertPath}") String alipayPublicCertPath,
+                           @Value("${alipay.rootCertPath}") String rootCertPath){
         this.setServerUrl(serverUrl);
         this.setAppId(appId);
         this.setPrivateKey(privateKey);
