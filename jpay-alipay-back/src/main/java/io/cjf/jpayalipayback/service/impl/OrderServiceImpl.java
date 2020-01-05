@@ -26,8 +26,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String getOrderPayPage(String orderId, Double amount, String title) throws AlipayApiException {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
-//        request.setReturnUrl(returnUrl);
-//        request.setNotifyUrl(notifyUrl);
+        request.setReturnUrl(returnUrl);
+        request.setNotifyUrl(notifyUrl);
         AlipayTradePagePayBizDTO bizDTO = new AlipayTradePagePayBizDTO();
         bizDTO.setOutTradeNo(orderId);
         bizDTO.setTotalAmount(amount);
