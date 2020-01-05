@@ -1,9 +1,12 @@
 package io.cjf.jpayalipayback.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import io.cjf.jpayalipayback.client.AlipayClientImpl;
 import io.cjf.jpayalipayback.dto.AlipayTradePagePayBizDTO;
 import io.cjf.jpayalipayback.service.OrderService;
@@ -38,5 +41,17 @@ public class OrderServiceImpl implements OrderService {
         String body = response.getBody();
 
         return body;
+    }
+
+    @Override
+    public AlipayTradeQueryResponse getPayResult(String orderId, String alipayTradeNo) throws AlipayApiException {
+        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("out_trade_no", orderId);
+        bizJson.put("trade_no", alipayTradeNo);
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayTradeQueryResponse response = alipayClient.execute(request);
+        return response;
     }
 }
