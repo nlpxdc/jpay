@@ -7,17 +7,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class AlipayConfig extends CertAlipayRequest {
 
-    public AlipayConfig(@Value("${}") String serverUrl,
-                        @Value("${}") String appId,
-                        @Value("${}") String privateKey,
-                        @Value("${}") String alipayPublicCertPath){
+    public AlipayConfig(@Value("${alipay.serverUrl}") String serverUrl,
+                        @Value("${alipay.appId}") String appId,
+                        @Value("${alipay.privateKey}") String privateKey,
+                        @Value("${alipay.certPath}") String certPath,
+                        @Value("${alipay.alipayPublicCertPath}") String alipayPublicCertPath,
+                        @Value("${alipay.rootCertPath}") String rootCertPath){
         this.setServerUrl(serverUrl);
         this.setAppId(appId);
         this.setPrivateKey(privateKey);
         this.setFormat("json");
         this.setCharset("utf-8");
         this.setSignType("RSA2");
+        this.setCertPath(certPath);
         this.setAlipayPublicCertPath(alipayPublicCertPath);
+        this.setRootCertPath(rootCertPath);
     }
 
 }
