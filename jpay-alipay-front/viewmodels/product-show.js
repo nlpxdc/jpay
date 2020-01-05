@@ -4,17 +4,7 @@ var app = new Vue({
     methods: {
         handleBuyClick() {
             console.log('buy click');
-            this.getOrderPayPage();
-        },
-        getOrderPayPage() {
-            axios.get('/order/getOrderPayPage')
-                .then(function (response) {
-                    console.log(response);
-                    document.write(response.data);
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
+            location.href = 'http://localhost:8080/order/getOrderPayPage'
         }
     }
 })
