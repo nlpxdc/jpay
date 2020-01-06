@@ -6,7 +6,6 @@ import com.alipay.api.internal.util.AlipaySignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -27,42 +26,32 @@ public class AlipayRecordController {
     public String notifyResult(@RequestParam Map<String, String> result) throws AlipayApiException {
         logger.info("alipay record notify result: {}", JSON.toJSON(result));
 
-//        //公钥（普通）
-//        boolean signVerified = AlipaySignature.rsaCheckV1(result, alipayPublicKey, "utf-8", "RSA2");
-        //公钥（证书）
-        boolean signVerified = AlipaySignature.rsaCertCheckV1(result, alipayPublicCertPath, "utf-8", "RSA2");
+        boolean signVerified = AlipaySignature.rsaCheckV1(result, alipayPublicKey, "utf-8", "RSA2");
         logger.info("signVerified: {}", signVerified);
 
         if (signVerified) {
-            logger.info("pay result success");
+            //todo check params
             return "success";
         } else {
-            logger.info("pay result failure");
             return "failure";
         }
 
     }
 
-    @PostMapping("/notifyResultJson")
-    public String notifyResultJson(@RequestBody Map<String, String> result) throws AlipayApiException {
-        logger.info("alipay record notify result: {}", JSON.toJSON(result));
+    @RequestMapping("/notifyResultCert")
+    public String notifyResultCert(@RequestParam Map<String, String> result) throws AlipayApiException {
+        logger.info("alipay record notify result cert: {}", JSON.toJSON(result));
 
-//        //公钥（普通）
-//        boolean signVerified = AlipaySignature.rsaCheckV1(result, alipayPublicKey, "utf-8", "RSA2");
-        //公钥（证书）
         boolean signVerified = AlipaySignature.rsaCertCheckV1(result, alipayPublicCertPath, "utf-8", "RSA2");
-
         logger.info("signVerified: {}", signVerified);
+
         if (signVerified) {
-            logger.info("pay result success");
+            //todo check params
             return "success";
         } else {
-            logger.info("pay result failure");
             return "failure";
         }
 
     }
-
-
 
 }
