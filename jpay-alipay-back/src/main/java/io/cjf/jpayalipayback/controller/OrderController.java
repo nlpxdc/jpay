@@ -47,6 +47,8 @@ public class OrderController {
     public AlipayTradeQueryResponse getPayResult(@RequestParam String orderId,
                                                  @RequestParam(required = false) String alipayTradeNo) throws AlipayApiException {
         AlipayTradeQueryResponse payResult = orderService.getPayResult(orderId, alipayTradeNo);
+        String body = payResult.getBody();
+        logger.info("order description: {}", body);
         return payResult;
     }
 

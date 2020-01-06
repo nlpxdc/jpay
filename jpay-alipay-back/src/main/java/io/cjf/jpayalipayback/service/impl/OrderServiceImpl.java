@@ -51,7 +51,10 @@ public class OrderServiceImpl implements OrderService {
         bizJson.put("trade_no", alipayTradeNo);
         request.setBizContent(bizJson.toJSONString());
 
-        AlipayTradeQueryResponse response = alipayClient.execute(request);
+//        //公钥（普通）
+//        AlipayTradeQueryResponse response = alipayClient.execute(request);
+        //公钥（证书）
+        AlipayTradeQueryResponse response = alipayClient.certificateExecute(request);
         return response;
     }
 }

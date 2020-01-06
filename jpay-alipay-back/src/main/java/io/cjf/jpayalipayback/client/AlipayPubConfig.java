@@ -4,7 +4,7 @@ import com.alipay.api.CertAlipayRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class AlipayPubConfig extends CertAlipayRequest {
 
     public AlipayPubConfig(@Value("${alipay.serverUrl}") String serverUrl,
