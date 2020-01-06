@@ -31,10 +31,13 @@ public class AlipayRecordController {
 //        boolean signVerified = AlipaySignature.rsaCheckV1(result, alipayPublicKey, "utf-8", "RSA2");
         //公钥（证书）
         boolean signVerified = AlipaySignature.rsaCertCheckV1(result, alipayPublicCertPath, "utf-8", "RSA2");
+        logger.info("signVerified: {}", signVerified);
 
         if (signVerified) {
+            logger.info("pay result success");
             return "success";
         } else {
+            logger.info("pay result failure");
             return "failure";
         }
 
@@ -49,9 +52,12 @@ public class AlipayRecordController {
         //公钥（证书）
         boolean signVerified = AlipaySignature.rsaCertCheckV1(result, alipayPublicCertPath, "utf-8", "RSA2");
 
+        logger.info("signVerified: {}", signVerified);
         if (signVerified) {
+            logger.info("pay result success");
             return "success";
         } else {
+            logger.info("pay result failure");
             return "failure";
         }
 
