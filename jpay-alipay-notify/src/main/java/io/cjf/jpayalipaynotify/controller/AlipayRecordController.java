@@ -20,11 +20,18 @@ public class AlipayRecordController {
     @Value("${alipay.alipayPublicKey}")
     private String alipayPublicKey;
 
+    @Value("${alipay.alipayPublicCertPath}")
+    private String alipayPublicCertPath;
+
     @RequestMapping("/notifyResult")
     public String notifyResult(@RequestParam Map<String, String> result) throws AlipayApiException {
         logger.info("alipay record notify result: {}", JSON.toJSON(result));
 
-        boolean signVerified = AlipaySignature.rsaCheckV1(result, alipayPublicKey, "utf-8", "RSA2");
+//        //公钥（普通）
+//        boolean signVerified = AlipaySignature.rsaCheckV1(result, alipayPublicKey, "utf-8", "RSA2");
+        //公钥（证书）
+        boolean signVerified = AlipaySignature.rsaCertCheckV1(result, alipayPublicCertPath, "utf-8", "RSA2");
+
         if (signVerified) {
             return "success";
         } else {
@@ -32,5 +39,24 @@ public class AlipayRecordController {
         }
 
     }
+
+    @PostMapping("/notifyResultJson")
+    public String notifyResultJson(@RequestBody Map<String, String> result) throws AlipayApiException {
+        logger.info("alipay record notify result: {}", JSON.toJSON(result));
+
+//        //公钥（普通）
+//        boolean signVerified = AlipaySignature.rsaCheckV1(result, alipayPublicKey, "utf-8", "RSA2");
+        //公钥（证书）
+        boolean signVerified = AlipaySignature.rsaCertCheckV1(result, alipayPublicCertPath, "utf-8", "RSA2");
+
+        if (signVerified) {
+            return "success";
+        } else {
+            return "failure";
+        }
+
+    }
+
+
 
 }
