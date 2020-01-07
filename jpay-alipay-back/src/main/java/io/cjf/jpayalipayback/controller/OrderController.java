@@ -55,8 +55,9 @@ public class OrderController {
     @PostMapping("/applyRefund")
     public AlipayTradeRefundResponse applyRefund(@RequestBody ApplyRefundDTO applyRefundDTO) throws AlipayApiException {
         String orderId = applyRefundDTO.getOrderId();
+        String orderRefundId = applyRefundDTO.getOrderRefundId();
         Double amount = applyRefundDTO.getAmount();
-        AlipayTradeRefundResponse response = orderService.applyRefund(orderId, amount);
+        AlipayTradeRefundResponse response = orderService.applyRefund(orderId, orderRefundId, amount);
         String body = response.getBody();
         logger.info("apply refund body: {}", body);
         return response;

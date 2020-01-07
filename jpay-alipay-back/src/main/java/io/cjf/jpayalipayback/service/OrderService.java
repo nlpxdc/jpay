@@ -10,6 +10,6 @@ public interface OrderService {
 
     AlipayTradeQueryResponse getPayResult(String orderId, String alipayTradeNo, Boolean useCert) throws AlipayApiException;
 
-    AlipayTradeRefundResponse applyRefund(String orderId, Double amount) throws AlipayApiException;
+    AlipayTradeRefundResponse applyRefund(String orderId, String orderRefundId, Double amount) throws AlipayApiException;
 
 }

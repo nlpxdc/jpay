@@ -2,6 +2,7 @@ package io.cjf.jpayalipayback.dto;
 
 public class ApplyRefundDTO {
     private String orderId;
+    private String orderRefundId;
     private Double amount;
 
     public String getOrderId() {
@@ -18,5 +19,13 @@ public class ApplyRefundDTO {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getOrderRefundId() {
+        return orderRefundId;
+    }
+
+    public void setOrderRefundId(String orderRefundId) {
+        this.orderRefundId = orderRefundId;
     }
 }

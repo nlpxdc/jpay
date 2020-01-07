@@ -79,10 +79,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public AlipayTradeRefundResponse applyRefund(String orderId, Double amount) throws AlipayApiException {
+    public AlipayTradeRefundResponse applyRefund(String orderId, String orderRefundId, Double amount) throws AlipayApiException {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         JSONObject bizJson = new JSONObject();
         bizJson.put("out_trade_no", orderId);
+        bizJson.put("out_request_no", orderRefundId);
         bizJson.put("refund_amount", amount);
         request.setBizContent(bizJson.toJSONString());
 
