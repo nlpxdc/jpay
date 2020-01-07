@@ -4,7 +4,7 @@ import com.alipay.api.DefaultAlipayClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class AlipayClientImpl extends DefaultAlipayClient {
 
     public AlipayClientImpl(@Value("${alipay.serverUrl}") String serverUrl,

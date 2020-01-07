@@ -1,27 +1,27 @@
 package io.cjf.jpayalipayback.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.request.*;
 import com.alipay.api.response.*;
 import io.cjf.jpayalipayback.client.AlipayCertClientImpl;
-import io.cjf.jpayalipayback.client.AlipayClientImpl;
-import io.cjf.jpayalipayback.dto.AlipayTradePagePayBizDTO;
 import io.cjf.jpayalipayback.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private AlipayClientImpl alipayClient;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+//    @Autowired
+//    private AlipayClientImpl alipayClient;
 
     @Autowired
     private AlipayCertClientImpl alipayCertClient;
@@ -32,9 +32,6 @@ public class OrderServiceImpl implements OrderService {
     @Value("${alipay.notifyUrl}")
     private String notifyUrl;
 
-    @Value("${alipay.notifyCertUrl}")
-    private String notifyCertUrl;
-
     @Value("${alipay.sellerId}")
     private String sellerId;
 
@@ -42,11 +39,10 @@ public class OrderServiceImpl implements OrderService {
     private String buyerId;
 
     @Override
-    public String getOrderPayPage(String orderId, Double amount, String title, Boolean userCert) throws AlipayApiException {
+    public String getOrderPayPage(String orderId, Double amount, String title) throws AlipayApiException {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         request.setReturnUrl(returnUrl);
-        String notifyUrl = userCert ? this.notifyCertUrl : this.notifyUrl;
-        request.setNotifyUrl(notifyUrl);
+        request.setNotifyUrl(this.notifyUrl);
 
         JSONObject bizJson = new JSONObject();
         bizJson.put("product_code", "FAST_INSTANT_TRADE_PAY");
@@ -60,37 +56,15 @@ public class OrderServiceImpl implements OrderService {
         Date expireTime = new Date(expireTimestamp);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String expireTimeStr = simpleDateFormat.format(expireTime);
-        bizJson.put("time_expire", expireTimeStr);
+//        bizJson.put("time_expire", expireTimeStr);
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradePagePayResponse response;
-        if (userCert){
-            response = alipayCertClient.pageExecute(request);
-        }else {
-            response = alipayClient.pageExecute(request);
-        }
+        response = alipayCertClient.pageExecute(request);
 
         String body = response.getBody();
 
         return body;
-    }
-
-    @Override
-    public AlipayTradeQueryResponse getPayResult(String orderId, String alipayTradeNo, Boolean userCert) throws AlipayApiException {
-        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
-        JSONObject bizJson = new JSONObject();
-        bizJson.put("out_trade_no", orderId);
-        bizJson.put("trade_no", alipayTradeNo);
-        request.setBizContent(bizJson.toJSONString());
-
-        AlipayTradeQueryResponse response;
-        if (userCert){
-            response = alipayCertClient.certificateExecute(request);
-        }else {
-            response = alipayClient.execute(request);
-        }
-
-        return response;
     }
 
     @Override
@@ -103,6 +77,8 @@ public class OrderServiceImpl implements OrderService {
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeRefundResponse response = alipayCertClient.certificateExecute(request);
+        String body = response.getBody();
+        logger.info("alipay trade refund body: {}", body);
 
         return response;
     }
@@ -116,7 +92,8 @@ public class OrderServiceImpl implements OrderService {
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeFastpayRefundQueryResponse response = alipayCertClient.certificateExecute(request);
-
+        String body = response.getBody();
+        logger.info("alipay refund query body: {}", body);
         return response;
     }
 
@@ -129,7 +106,8 @@ public class OrderServiceImpl implements OrderService {
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeCloseResponse response = alipayCertClient.certificateExecute(request);
-
+        String body = response.getBody();
+        logger.info("alipay trade close body: {}", body);
         return response;
     }
 
@@ -141,7 +119,8 @@ public class OrderServiceImpl implements OrderService {
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeQueryResponse response = alipayCertClient.certificateExecute(request);
-
+        String body = response.getBody();
+        logger.info("alipay trade query body: {}", body);
         return response;
     }
 
@@ -157,7 +136,8 @@ public class OrderServiceImpl implements OrderService {
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeCreateResponse response = alipayCertClient.certificateExecute(request);
-
+        String body = response.getBody();
+        logger.info("alipay trade create body: {}", body);
         return response;
     }
 }

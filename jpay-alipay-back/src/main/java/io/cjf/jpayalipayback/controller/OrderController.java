@@ -26,26 +26,14 @@ public class OrderController {
     private String appId;
 
     @GetMapping(value = "/getOrderPayPage", produces = MediaType.TEXT_HTML_VALUE)
-    public String getOrderPayPage(@RequestParam Double amount,
-                                  @RequestParam(required = false, defaultValue = "false") Boolean useCert) throws AlipayApiException {
+    public String getOrderPayPage(@RequestParam Double amount) throws AlipayApiException {
         logger.info("get order pay page");
 
-        //todo get order record by orderId
         String orderId = appId + "order" + new Date().getTime();
         logger.info("orderId: {}", orderId);
         String title = "订单支付" + orderId;
-        String page = orderService.getOrderPayPage(orderId, amount, title, useCert);
+        String page = orderService.getOrderPayPage(orderId, amount, title);
         return page;
-    }
-
-    @GetMapping("/getPayResult")
-    public AlipayTradeQueryResponse getPayResult(@RequestParam String orderId,
-                                                 @RequestParam(required = false) String alipayTradeNo,
-                                                 @RequestParam(required = false, defaultValue = "false") Boolean useCert) throws AlipayApiException {
-        AlipayTradeQueryResponse payResult = orderService.getPayResult(orderId, alipayTradeNo, useCert);
-        String body = payResult.getBody();
-        logger.info("order description: {}", body);
-        return payResult;
     }
 
     @PostMapping("/applyRefund")
@@ -54,8 +42,6 @@ public class OrderController {
         String orderRefundId = applyRefundDTO.getOrderRefundId();
         Double amount = applyRefundDTO.getAmount();
         AlipayTradeRefundResponse response = orderService.applyRefund(orderId, orderRefundId, amount);
-        String body = response.getBody();
-        logger.info("apply refund body: {}", body);
         return response;
     }
 
@@ -63,16 +49,12 @@ public class OrderController {
     public AlipayTradeFastpayRefundQueryResponse getRefundResult(String orderId,
                                                                  String orderRefundId) throws AlipayApiException {
         AlipayTradeFastpayRefundQueryResponse response = orderService.getRefundResult(orderId, orderRefundId);
-        String body = response.getBody();
-        logger.info("apply refund body: {}", body);
         return response;
     }
 
     @GetMapping("/getAlipayTradeInfo")
     public AlipayTradeQueryResponse getAlipayTradeInfo(@RequestParam String orderId) throws AlipayApiException {
         AlipayTradeQueryResponse response = orderService.getAlipayTradeInfo(orderId);
-        String body = response.getBody();
-        logger.info("apply refund body: {}", body);
         return response;
     }
 
@@ -81,8 +63,6 @@ public class OrderController {
     public AlipayTradeCloseResponse close(@RequestParam String orderId,
                                           @RequestParam(required = false) String alipayTradeId) throws AlipayApiException {
         AlipayTradeCloseResponse response = orderService.close(orderId, alipayTradeId);
-        String body = response.getBody();
-        logger.info("apply refund body: {}", body);
         return response;
     }
 
@@ -93,8 +73,6 @@ public class OrderController {
         String title = "订单支付" + orderId;
 
         AlipayTradeCreateResponse response = orderService.createAlipayTrade(orderId, amount, title);
-        String body = response.getBody();
-        logger.info("apply refund body: {}", body);
         return response;
     }
 
