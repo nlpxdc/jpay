@@ -116,6 +116,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public AlipayTradeCancelResponse cancelOrderPay(String orderId) throws AlipayApiException {
+        AlipayTradeCancelRequest request = new AlipayTradeCancelRequest();
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("out_trade_no", orderId);
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayTradeCancelResponse response = alipayCertClient.certificateExecute(request);
+        String body = response.getBody();
+        logger.info("alipay trade cancel body: {}", body);
+        return response;
+    }
+
+    @Override
     public AlipayTradeRefundResponse applyRefund(String orderId, String orderRefundId, Double amount) throws AlipayApiException {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         JSONObject bizJson = new JSONObject();

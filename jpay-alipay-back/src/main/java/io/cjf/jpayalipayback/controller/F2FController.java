@@ -1,6 +1,7 @@
 package io.cjf.jpayalipayback.controller;
 
 import com.alipay.api.AlipayApiException;
+import com.alipay.api.response.AlipayTradeCancelResponse;
 import com.alipay.api.response.AlipayTradePayResponse;
 import io.cjf.jpayalipayback.dto.PayCodePayDTO;
 import io.cjf.jpayalipayback.service.OrderService;
@@ -8,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -36,6 +34,12 @@ public class F2FController {
         Double discount = payCodePayDTO.getDiscount();
         String authcode = payCodePayDTO.getAuthcode();
         AlipayTradePayResponse response = orderService.payCodePay(orderId, title, amount, discount, authcode);
+        return response;
+    }
+
+    @PostMapping("/cancelOrderPay")
+    public AlipayTradeCancelResponse cancelOrderPay(@RequestParam String orderId) throws AlipayApiException {
+        AlipayTradeCancelResponse response = orderService.cancelOrderPay(orderId);
         return response;
     }
 

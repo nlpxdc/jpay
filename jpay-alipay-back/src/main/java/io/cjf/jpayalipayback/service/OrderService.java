@@ -17,6 +17,8 @@ public interface OrderService {
                                       Double discount,
                                       String authcode) throws AlipayApiException;
 
+    AlipayTradeCancelResponse cancelOrderPay(String orderId) throws AlipayApiException;
+
     AlipayTradeRefundResponse applyRefund(String orderId, String orderRefundId, Double amount) throws AlipayApiException;
 
     AlipayTradeFastpayRefundQueryResponse getRefundResult(String orderId, String orderRefundId) throws AlipayApiException;
