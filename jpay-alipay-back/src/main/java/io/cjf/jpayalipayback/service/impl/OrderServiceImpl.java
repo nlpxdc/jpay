@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -43,11 +47,21 @@ public class OrderServiceImpl implements OrderService {
         request.setReturnUrl(returnUrl);
         String notifyUrl = userCert ? this.notifyCertUrl : this.notifyUrl;
         request.setNotifyUrl(notifyUrl);
-        AlipayTradePagePayBizDTO bizDTO = new AlipayTradePagePayBizDTO();
-        bizDTO.setOutTradeNo(orderId);
-        bizDTO.setTotalAmount(amount);
-        bizDTO.setSubject(title);
-        request.setBizContent(JSON.toJSONString(bizDTO));
+
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("product_code", "FAST_INSTANT_TRADE_PAY");
+        bizJson.put("out_trade_no", orderId);
+        bizJson.put("total_amount", amount);
+        bizJson.put("subject", title);
+
+        Date now = new Date();
+        long nowTimestamp = now.getTime();
+        long expireTimestamp = nowTimestamp + 30 * 1000;
+        Date expireTime = new Date(expireTimestamp);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String expireTimeStr = simpleDateFormat.format(expireTime);
+        bizJson.put("time_expire", expireTimeStr);
+        request.setBizContent(bizJson.toJSONString());
 
         AlipayTradePagePayResponse response;
         if (userCert){
