@@ -1,10 +1,7 @@
 package io.cjf.jpayalipayback.service;
 
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.response.AlipayTradeCloseResponse;
-import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
-import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.alipay.api.response.*;
 
 public interface OrderService {
 
@@ -19,5 +16,7 @@ public interface OrderService {
     AlipayTradeCloseResponse close(String orderId) throws AlipayApiException;
 
     AlipayTradeQueryResponse getAlipayTradeInfo(String orderId) throws AlipayApiException;
+
+    AlipayTradeCreateResponse createAlipayTrade(String orderId, Double amount, String title) throws AlipayApiException;
 
 }

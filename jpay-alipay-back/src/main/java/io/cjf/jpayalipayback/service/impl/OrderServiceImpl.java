@@ -31,6 +31,12 @@ public class OrderServiceImpl implements OrderService {
     @Value("${alipay.notifyCertUrl}")
     private String notifyCertUrl;
 
+    @Value("${alipay.sellerId}")
+    private String sellerId;
+
+    @Value("${alipay.buyerId}")
+    private String buyerId;
+
     @Override
     public String getOrderPayPage(String orderId, Double amount, String title, Boolean userCert) throws AlipayApiException {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
@@ -120,6 +126,22 @@ public class OrderServiceImpl implements OrderService {
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeQueryResponse response = alipayCertClient.certificateExecute(request);
+
+        return response;
+    }
+
+    @Override
+    public AlipayTradeCreateResponse createAlipayTrade(String orderId, Double amount, String title) throws AlipayApiException {
+        AlipayTradeCreateRequest request = new AlipayTradeCreateRequest();
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("out_trade_no", orderId);
+        bizJson.put("total_amount", amount.toString());
+        bizJson.put("subject", title);
+        bizJson.put("buyer_id", buyerId);
+//        bizJson.put("seller_id", sellerId);
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayTradeCreateResponse response = alipayCertClient.certificateExecute(request);
 
         return response;
     }
