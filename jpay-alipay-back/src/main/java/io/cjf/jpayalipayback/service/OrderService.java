@@ -17,4 +17,6 @@ public interface OrderService {
 
     AlipayTradeCreateResponse createAlipayTrade(String orderId, Double amount, String title) throws AlipayApiException;
 
+    AlipayDataDataserviceBillDownloadurlQueryResponse getBillUrl(String billType, String billDate) throws AlipayApiException;
+
 }

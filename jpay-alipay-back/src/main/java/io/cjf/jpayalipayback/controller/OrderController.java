@@ -76,4 +76,11 @@ public class OrderController {
         return response;
     }
 
+    @GetMapping("/getBillUrl")
+    public AlipayDataDataserviceBillDownloadurlQueryResponse getBillUrl(@RequestParam String billType,
+                                                                        @RequestParam String billDate) throws AlipayApiException {
+        AlipayDataDataserviceBillDownloadurlQueryResponse response = orderService.getBillUrl(billType, billDate);
+        return response;
+    }
+
 }

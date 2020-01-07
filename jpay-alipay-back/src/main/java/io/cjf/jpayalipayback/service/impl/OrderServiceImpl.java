@@ -140,4 +140,20 @@ public class OrderServiceImpl implements OrderService {
         logger.info("alipay trade create body: {}", body);
         return response;
     }
+
+    @Override
+    public AlipayDataDataserviceBillDownloadurlQueryResponse getBillUrl(String billType, String billDate) throws AlipayApiException {
+        AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("bill_type", billType);
+        bizJson.put("bill_date", billDate);
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayDataDataserviceBillDownloadurlQueryResponse response = alipayCertClient.certificateExecute(request);
+        String body = response.getBody();
+        logger.info("alipay bill url body: {}", body);
+        return response;
+
+    }
+
 }
