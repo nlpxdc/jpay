@@ -1,6 +1,7 @@
 package io.cjf.jpayalipayback.controller;
 
 import com.alipay.api.AlipayApiException;
+import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
@@ -65,6 +66,23 @@ public class OrderController {
     public AlipayTradeFastpayRefundQueryResponse getRefundResult(String orderId,
                                                                  String orderRefundId) throws AlipayApiException {
         AlipayTradeFastpayRefundQueryResponse response = orderService.getRefundResult(orderId, orderRefundId);
+        String body = response.getBody();
+        logger.info("apply refund body: {}", body);
+        return response;
+    }
+
+    @GetMapping("/getAlipayTradeInfo")
+    public AlipayTradeQueryResponse getAlipayTradeInfo(@RequestParam String orderId) throws AlipayApiException {
+        AlipayTradeQueryResponse response = orderService.getAlipayTradeInfo(orderId);
+        String body = response.getBody();
+        logger.info("apply refund body: {}", body);
+        return response;
+    }
+
+
+    @PostMapping("/close")
+    public AlipayTradeCloseResponse close(@RequestParam String orderId) throws AlipayApiException {
+        AlipayTradeCloseResponse response = orderService.close(orderId);
         String body = response.getBody();
         logger.info("apply refund body: {}", body);
         return response;

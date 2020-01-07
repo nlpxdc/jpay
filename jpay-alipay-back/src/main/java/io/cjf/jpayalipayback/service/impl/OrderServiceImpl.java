@@ -3,14 +3,8 @@ package io.cjf.jpayalipayback.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
-import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.alipay.api.request.AlipayTradeQueryRequest;
-import com.alipay.api.request.AlipayTradeRefundRequest;
-import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
-import com.alipay.api.response.AlipayTradePagePayResponse;
-import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.alipay.api.request.*;
+import com.alipay.api.response.*;
 import io.cjf.jpayalipayback.client.AlipayCertClientImpl;
 import io.cjf.jpayalipayback.client.AlipayClientImpl;
 import io.cjf.jpayalipayback.dto.AlipayTradePagePayBizDTO;
@@ -102,6 +96,30 @@ public class OrderServiceImpl implements OrderService {
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeFastpayRefundQueryResponse response = alipayCertClient.certificateExecute(request);
+
+        return response;
+    }
+
+    @Override
+    public AlipayTradeCloseResponse close(String orderId) throws AlipayApiException {
+        AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("out_trade_no", orderId);
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayTradeCloseResponse response = alipayCertClient.certificateExecute(request);
+
+        return response;
+    }
+
+    @Override
+    public AlipayTradeQueryResponse getAlipayTradeInfo(String orderId) throws AlipayApiException {
+        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("out_trade_no", orderId);
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayTradeQueryResponse response = alipayCertClient.certificateExecute(request);
 
         return response;
     }
