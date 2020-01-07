@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -42,29 +39,37 @@ public class OrderServiceImpl implements OrderService {
     public String getOrderPayPage(String orderId, Double amount, String title) throws AlipayApiException {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         request.setReturnUrl(returnUrl);
-        request.setNotifyUrl(this.notifyUrl);
+        request.setNotifyUrl(notifyUrl);
 
         JSONObject bizJson = new JSONObject();
         bizJson.put("product_code", "FAST_INSTANT_TRADE_PAY");
         bizJson.put("out_trade_no", orderId);
         bizJson.put("total_amount", amount);
         bizJson.put("subject", title);
-
-        Date now = new Date();
-        long nowTimestamp = now.getTime();
-        long expireTimestamp = nowTimestamp + 30 * 1000;
-        Date expireTime = new Date(expireTimestamp);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String expireTimeStr = simpleDateFormat.format(expireTime);
-//        bizJson.put("time_expire", expireTimeStr);
         bizJson.put("timeout_express", "1m");
         request.setBizContent(bizJson.toJSONString());
 
-        AlipayTradePagePayResponse response;
-        response = alipayCertClient.pageExecute(request);
-
+        AlipayTradePagePayResponse response = alipayCertClient.pageExecute(request);
         String body = response.getBody();
+        return body;
+    }
 
+    @Override
+    public String getOrderPayWap(String orderId, Double amount, String title) throws AlipayApiException {
+        AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
+        request.setReturnUrl(returnUrl);
+        request.setNotifyUrl(notifyUrl);
+
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("product_code", "QUICK_WAP_WAY");
+        bizJson.put("out_trade_no", orderId);
+        bizJson.put("total_amount", amount);
+        bizJson.put("subject", title);
+        bizJson.put("timeout_express", "1m");
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayTradeWapPayResponse response = alipayCertClient.pageExecute(request);
+        String body = response.getBody();
         return body;
     }
 

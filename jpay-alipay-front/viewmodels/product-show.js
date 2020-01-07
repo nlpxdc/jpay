@@ -7,6 +7,10 @@ var app = new Vue({
         handleBuyClick() {
             console.log('buy click');
             location.href = 'http://192.168.137.1/jpayalipayback/order/getOrderPayPage?amount=' + this.amount;
+        },
+        handleMobileBuyClick() {
+            console.log('mobile buy click');
+            location.href = 'http://192.168.137.1/jpayalipayback/order/getOrderPayWap?amount=' + this.amount;
         }
     }
 })
