@@ -1,11 +1,9 @@
 package io.cjf.jpayalipayback.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.cjf.jpayalipayback.dto.ApplyRefundDTO;
 import io.cjf.jpayalipayback.service.OrderService;
 import org.slf4j.Logger;
@@ -58,6 +56,15 @@ public class OrderController {
         String orderRefundId = applyRefundDTO.getOrderRefundId();
         Double amount = applyRefundDTO.getAmount();
         AlipayTradeRefundResponse response = orderService.applyRefund(orderId, orderRefundId, amount);
+        String body = response.getBody();
+        logger.info("apply refund body: {}", body);
+        return response;
+    }
+
+    @GetMapping("/getRefundResult")
+    public AlipayTradeFastpayRefundQueryResponse getRefundResult(String orderId,
+                                                                 String orderRefundId) throws AlipayApiException {
+        AlipayTradeFastpayRefundQueryResponse response = orderService.getRefundResult(orderId, orderRefundId);
         String body = response.getBody();
         logger.info("apply refund body: {}", body);
         return response;
