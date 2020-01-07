@@ -13,7 +13,7 @@ public interface OrderService {
 
     AlipayTradeFastpayRefundQueryResponse getRefundResult(String orderId, String orderRefundId) throws AlipayApiException;
 
-    AlipayTradeCloseResponse close(String orderId) throws AlipayApiException;
+    AlipayTradeCloseResponse close(String orderId, String alipayTradeId) throws AlipayApiException;
 
     AlipayTradeQueryResponse getAlipayTradeInfo(String orderId) throws AlipayApiException;
 

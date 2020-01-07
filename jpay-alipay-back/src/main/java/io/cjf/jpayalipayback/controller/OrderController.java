@@ -78,8 +78,9 @@ public class OrderController {
 
 
     @PostMapping("/close")
-    public AlipayTradeCloseResponse close(@RequestParam String orderId) throws AlipayApiException {
-        AlipayTradeCloseResponse response = orderService.close(orderId);
+    public AlipayTradeCloseResponse close(@RequestParam String orderId,
+                                          @RequestParam(required = false) String alipayTradeId) throws AlipayApiException {
+        AlipayTradeCloseResponse response = orderService.close(orderId, alipayTradeId);
         String body = response.getBody();
         logger.info("apply refund body: {}", body);
         return response;

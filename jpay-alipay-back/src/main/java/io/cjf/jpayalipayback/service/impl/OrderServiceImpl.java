@@ -107,10 +107,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public AlipayTradeCloseResponse close(String orderId) throws AlipayApiException {
+    public AlipayTradeCloseResponse close(String orderId, String alipayTradeId) throws AlipayApiException {
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         JSONObject bizJson = new JSONObject();
         bizJson.put("out_trade_no", orderId);
+        bizJson.put("trade_no", alipayTradeId);
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradeCloseResponse response = alipayCertClient.certificateExecute(request);
