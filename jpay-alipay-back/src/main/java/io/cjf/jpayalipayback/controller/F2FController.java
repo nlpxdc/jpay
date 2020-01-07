@@ -3,6 +3,7 @@ package io.cjf.jpayalipayback.controller;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayTradeCancelResponse;
 import com.alipay.api.response.AlipayTradePayResponse;
+import com.alipay.api.response.AlipayTradePrecreateResponse;
 import io.cjf.jpayalipayback.dto.PayCodePayDTO;
 import io.cjf.jpayalipayback.service.OrderService;
 import org.slf4j.Logger;
@@ -35,6 +36,16 @@ public class F2FController {
         String authcode = payCodePayDTO.getAuthcode();
         AlipayTradePayResponse response = orderService.payCodePay(orderId, title, amount, discount, authcode);
         return response;
+    }
+
+    @GetMapping("/getOrderPayQRCode")
+    public String getOrderPayQRCode(@RequestParam Double amount) throws AlipayApiException {
+        String orderId = appId + "order" + new Date().getTime();
+        logger.info("orderId: {}", orderId);
+        String title = "订单支付" + orderId;
+        AlipayTradePrecreateResponse response = orderService.getOrderPayQRCode(orderId, amount, title);
+        String qrCode = response.getQrCode();
+        return qrCode;
     }
 
     @PostMapping("/cancelOrderPay")

@@ -11,6 +11,8 @@ public interface OrderService {
 
     String getOrderPayApp(String orderId, Double amount, String title) throws AlipayApiException;
 
+    AlipayTradePrecreateResponse getOrderPayQRCode(String orderId, Double amount, String title) throws AlipayApiException;
+
     AlipayTradePayResponse payCodePay(String orderId,
                                       String title,
                                       Double amount,
