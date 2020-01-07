@@ -26,10 +26,14 @@ public class OrderServiceImpl implements OrderService {
     @Value("${alipay.notifyUrl}")
     private String notifyUrl;
 
+    @Value("${alipay.notifyCertUrl}")
+    private String notifyCertUrl;
+
     @Override
-    public String getOrderPayPage(String orderId, Double amount, String title) throws AlipayApiException {
+    public String getOrderPayPage(String orderId, Double amount, String title, Boolean userCert) throws AlipayApiException {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         request.setReturnUrl(returnUrl);
+        String notifyUrl = userCert ? this.notifyCertUrl : this.notifyUrl;
         request.setNotifyUrl(notifyUrl);
         AlipayTradePagePayBizDTO bizDTO = new AlipayTradePagePayBizDTO();
         bizDTO.setOutTradeNo(orderId);
@@ -44,17 +48,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public AlipayTradeQueryResponse getPayResult(String orderId, String alipayTradeNo) throws AlipayApiException {
+    public AlipayTradeQueryResponse getPayResult(String orderId, String alipayTradeNo, Boolean userCert) throws AlipayApiException {
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         JSONObject bizJson = new JSONObject();
         bizJson.put("out_trade_no", orderId);
         bizJson.put("trade_no", alipayTradeNo);
         request.setBizContent(bizJson.toJSONString());
 
-//        //公钥（普通）
-//        AlipayTradeQueryResponse response = alipayClient.execute(request);
-        //公钥（证书）
-        AlipayTradeQueryResponse response = alipayClient.certificateExecute(request);
+        AlipayTradeQueryResponse response;
+        if (userCert){
+            response = alipayClient.certificateExecute(request);
+        }else {
+            response = alipayClient.execute(request);
+        }
+
         return response;
     }
 }

@@ -5,8 +5,8 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 
 public interface OrderService {
 
-    String getOrderPayPage(String orderId, Double amount, String title) throws AlipayApiException;
+    String getOrderPayPage(String orderId, Double amount, String title, Boolean useCert) throws AlipayApiException;
 
-    AlipayTradeQueryResponse getPayResult(String orderId, String alipayTradeNo) throws AlipayApiException;
+    AlipayTradeQueryResponse getPayResult(String orderId, String alipayTradeNo, Boolean useCert) throws AlipayApiException;
 
 }

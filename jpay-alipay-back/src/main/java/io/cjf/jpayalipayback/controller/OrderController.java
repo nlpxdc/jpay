@@ -31,7 +31,7 @@ public class OrderController {
     private String appId;
 
     @GetMapping(value = "/getOrderPayPage", produces = MediaType.TEXT_HTML_VALUE)
-    public String getOrderPayPage() throws AlipayApiException {
+    public String getOrderPayPage(@RequestParam(required = false, defaultValue = "false") Boolean useCert) throws AlipayApiException {
         logger.info("get order pay page");
 
         //todo get order record by orderId
@@ -39,14 +39,15 @@ public class OrderController {
         logger.info("orderId: {}", orderId);
         Double amount = 0.01;
         String title = "订单支付" + orderId;
-        String page = orderService.getOrderPayPage(orderId, amount, title);
+        String page = orderService.getOrderPayPage(orderId, amount, title, useCert);
         return page;
     }
 
     @GetMapping("/getPayResult")
     public AlipayTradeQueryResponse getPayResult(@RequestParam String orderId,
-                                                 @RequestParam(required = false) String alipayTradeNo) throws AlipayApiException {
-        AlipayTradeQueryResponse payResult = orderService.getPayResult(orderId, alipayTradeNo);
+                                                 @RequestParam(required = false) String alipayTradeNo,
+                                                 @RequestParam(required = false, defaultValue = "false") Boolean useCert) throws AlipayApiException {
+        AlipayTradeQueryResponse payResult = orderService.getPayResult(orderId, alipayTradeNo, useCert);
         String body = payResult.getBody();
         logger.info("order description: {}", body);
         return payResult;
