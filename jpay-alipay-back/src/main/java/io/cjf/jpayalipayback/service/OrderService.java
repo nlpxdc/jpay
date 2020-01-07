@@ -9,6 +9,8 @@ public interface OrderService {
 
     String getOrderPayWap(String orderId, Double amount, String title) throws AlipayApiException;
 
+    String getOrderPayApp(String orderId, Double amount, String title) throws AlipayApiException;
+
     AlipayTradeRefundResponse applyRefund(String orderId, String orderRefundId, Double amount) throws AlipayApiException;
 
     AlipayTradeFastpayRefundQueryResponse getRefundResult(String orderId, String orderRefundId) throws AlipayApiException;

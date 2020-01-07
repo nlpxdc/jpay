@@ -45,6 +45,15 @@ public class OrderController {
         return page;
     }
 
+    @GetMapping(value = "/getOrderPayApp", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String getOrderPayApp(Double amount) throws AlipayApiException {
+        String orderId = appId + "order" + new Date().getTime();
+        logger.info("orderId: {}", orderId);
+        String title = "订单支付" + orderId;
+        String page = orderService.getOrderPayApp(orderId, amount, title);
+        return page;
+    }
+
     @PostMapping("/applyRefund")
     public AlipayTradeRefundResponse applyRefund(@RequestBody ApplyRefundDTO applyRefundDTO) throws AlipayApiException {
         String orderId = applyRefundDTO.getOrderId();
