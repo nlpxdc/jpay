@@ -4,7 +4,7 @@ var app = new Vue({
     methods: {
         handleBuyClick() {
             console.log('buy click');
-            location.href = 'http://localhost:8080/order/getOrderPayPage'
+            location.href = 'http://localhost:8080/order/getOrderPayPage?useCert=true'
         }
     }
 })

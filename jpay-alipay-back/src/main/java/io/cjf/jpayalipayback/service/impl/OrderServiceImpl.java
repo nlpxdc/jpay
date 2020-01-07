@@ -7,6 +7,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import io.cjf.jpayalipayback.client.AlipayCertClientImpl;
 import io.cjf.jpayalipayback.client.AlipayClientImpl;
 import io.cjf.jpayalipayback.dto.AlipayTradePagePayBizDTO;
 import io.cjf.jpayalipayback.service.OrderService;
@@ -19,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private AlipayClientImpl alipayClient;
+
+    @Autowired
+    private AlipayCertClientImpl alipayCertClient;
 
     @Value("${alipay.returnUrl}")
     private String returnUrl;
@@ -41,7 +45,13 @@ public class OrderServiceImpl implements OrderService {
         bizDTO.setSubject(title);
         request.setBizContent(JSON.toJSONString(bizDTO));
 
-        AlipayTradePagePayResponse response = alipayClient.pageExecute(request);
+        AlipayTradePagePayResponse response;
+        if (userCert){
+            response = alipayCertClient.pageExecute(request);
+        }else {
+            response = alipayClient.pageExecute(request);
+        }
+
         String body = response.getBody();
 
         return body;
@@ -57,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
         AlipayTradeQueryResponse response;
         if (userCert){
-            response = alipayClient.certificateExecute(request);
+            response = alipayCertClient.certificateExecute(request);
         }else {
             response = alipayClient.execute(request);
         }
