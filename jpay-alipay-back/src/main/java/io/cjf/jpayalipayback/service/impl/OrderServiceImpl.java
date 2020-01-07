@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import io.cjf.jpayalipayback.client.AlipayCertClientImpl;
 import io.cjf.jpayalipayback.client.AlipayClientImpl;
 import io.cjf.jpayalipayback.dto.AlipayTradePagePayBizDTO;
@@ -14,6 +16,7 @@ import io.cjf.jpayalipayback.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -71,6 +74,19 @@ public class OrderServiceImpl implements OrderService {
         }else {
             response = alipayClient.execute(request);
         }
+
+        return response;
+    }
+
+    @Override
+    public AlipayTradeRefundResponse applyRefund(String orderId, Double amount) throws AlipayApiException {
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        JSONObject bizJson = new JSONObject();
+        bizJson.put("out_trade_no", orderId);
+        bizJson.put("refund_amount", amount);
+        request.setBizContent(bizJson.toJSONString());
+
+        AlipayTradeRefundResponse response = alipayCertClient.certificateExecute(request);
 
         return response;
     }

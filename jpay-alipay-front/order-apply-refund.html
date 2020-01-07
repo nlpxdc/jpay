@@ -6,20 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/elementui.css">
-    <title>product-show</title>
+    <title>order-apply-refund</title>
 </head>
 
 <body>
     <div id="app">
+        <el-input v-model="orderId" placeholder="请输入订单号"></el-input>
         <el-input v-model="amount" placeholder="请输入金额"></el-input>
-        <el-button type="primary" @click="handleBuyClick">立即购买</el-button>
+        <el-button type="primary" @click="handleApplyRefundClick">申请退款</el-button>
     </div>
 
     <script src="assets/js/axios.min.js"></script>
     <script src="assets/js/common.js"></script>
     <script src="assets/js/vue.js"></script>
     <script src="assets/js/elementui.js"></script>
-    <script src="viewmodels/product-show.js"></script>
+    <script src="viewmodels/order-apply-refund.js"></script>
 
 </body>
 

@@ -1,10 +1,12 @@
 var app = new Vue({
     el: '#app',
-    data: {},
+    data: {
+        amount: ''
+    },
     methods: {
         handleBuyClick() {
             console.log('buy click');
-            location.href = 'http://localhost:8080/order/getOrderPayPage?useCert=true'
+            location.href = 'http://localhost:8080/order/getOrderPayPage?useCert=true&amount=' + this.amount;
         }
     }
 })
