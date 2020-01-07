@@ -57,6 +57,7 @@ public class OrderServiceImpl implements OrderService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String expireTimeStr = simpleDateFormat.format(expireTime);
 //        bizJson.put("time_expire", expireTimeStr);
+        bizJson.put("timeout_express", "1m");
         request.setBizContent(bizJson.toJSONString());
 
         AlipayTradePagePayResponse response;

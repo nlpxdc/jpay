@@ -6,7 +6,7 @@ var app = new Vue({
     methods: {
         handleBuyClick() {
             console.log('buy click');
-            location.href = 'http://localhost/jpayalipayback/order/getOrderPayPage?amount=' + this.amount;
+            location.href = 'http://192.168.137.1/jpayalipayback/order/getOrderPayPage?amount=' + this.amount;
         }
     }
 })

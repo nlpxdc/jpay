@@ -1,1 +1,1 @@
-axios.defaults.baseURL = 'http://localhost/jpayalipayback';
+axios.defaults.baseURL = 'http://192.168.137.1/jpayalipayback';
