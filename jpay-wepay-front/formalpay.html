@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/vant.css">
+    <title>Formal Pay</title>
+    <script src="assets/js/vconsole.min.js"></script>
+    <script>
+        var vConsole = new VConsole();
+    </script>
+</head>
+
+<body>
+    <div id="app">
+
+        <mt-button type="primary" @click="handleCheckPay">检查支付</mt-button>
+        <mt-button type="primary" @click="handlePay">支付</mt-button>
+
+    </div>
+
+    <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/vant.min.js"></script>
+    <script src="assets/js/jweixin-1.4.0.js"></script>
+    <script src="assets/js/sha1.js"></script>
+    <script src="assets/js/md5.min.js"></script>
+    <script src="viewmodels/formalpay.js"></script>
+
+</body>
+
+</html>
