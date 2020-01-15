@@ -3,6 +3,8 @@ var app = new Vue({
     data: {
         appId: 'wxba004d8c6d611e32', //正式号
         ticket: '',
+        wechatConfig: 'unknown',
+        supportWepay: 'unknown',
         prepay_id: 'wx17141736800711da66ae45bf1456919100',
         signType: 'MD5',
         payKey: '9f87a21142b6af5b144dbb4ac2077c5b' //to hide, calc in backend
@@ -49,26 +51,6 @@ var app = new Vue({
     },
     mounted() {
         console.log('view mounted');
-
-        wx.config({
-            debug: false,
-            appId: this.appId,
-            timestamp: this.currentTime,
-            nonceStr: this.nonceStr,
-            signature: this.signature,
-            jsApiList: [
-                'checkJsApi',
-                'chooseWXPay'
-            ]
-        });
-
-        wx.error(function (res) {
-            console.error('wx error', res);
-        });
-
-        wx.ready(function () {
-            console.log('wx ready');
-        });
     },
     methods: {
         handleCheckPay() {
@@ -77,10 +59,12 @@ var app = new Vue({
                 jsApiList: ['chooseWXPay'],
                 success: function (res) {
                     console.log('check pay success', res);
+                    app.supportWepay = true;
                     alert('support pay');
                 },
                 fail: function (err) {
                     console.error('check pay error', err);
+                    app.supportWepay = false;
                     alert('not support pay');
                 },
                 complete: function (res) {
@@ -132,6 +116,39 @@ var app = new Vue({
                 .catch(function (error) {
                     console.error(error);
                 });
+        },
+        handleWechatConfigTouch() {
+            console.log('wechat config touch');
+
+            if (!this.ticket) {
+                alert('ticket 不存在');
+                return;
+            }
+
+            wx.config({
+                debug: false,
+                appId: this.appId,
+                timestamp: this.currentTime,
+                nonceStr: this.nonceStr,
+                signature: this.signature,
+                jsApiList: [
+                    'checkJsApi',
+                    'chooseWXPay'
+                ]
+            });
+
+            wx.error(function (res) {
+                console.error('wx error', res);
+                app.wechatConfig = false;
+            });
+
+            wx.ready(function () {
+                console.log('wx ready');
+                if (app.wechatConfig !== false) {
+                    app.wechatConfig = true;
+                    alert('配置成功');
+                }
+            });
         }
     }
 })
