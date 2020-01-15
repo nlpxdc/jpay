@@ -2,7 +2,7 @@ var app = new Vue({
     el: '#app',
     data: {
         appId: 'wxba004d8c6d611e32', //正式号
-        ticket: 'HoagFKDcsGMVCIY2vOjf9uEmwNhGCGgxQ35AwRkUNkRUBxHlF-SjHT3Z6K_tlEAaANxPERL2wXEcH7xEIqK3fg',
+        ticket: '',
         prepay_id: 'wx17141736800711da66ae45bf1456919100',
         signType: 'MD5',
         payKey: '9f87a21142b6af5b144dbb4ac2077c5b' //to hide, calc in backend
@@ -118,6 +118,9 @@ var app = new Vue({
                     console.log('menu click', res);
                 }
             });
+        },
+        handleGetJsTicketTouch(){
+            console.log('get js ticket touch');
         }
     }
 })
