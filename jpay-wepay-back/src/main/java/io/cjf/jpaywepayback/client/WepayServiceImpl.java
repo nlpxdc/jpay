@@ -28,7 +28,7 @@ public class WepayServiceImpl implements WepayService {
     private String notifyUrl;
 
     @Override
-    public JSONObject payUnifiedOrder(String orderId, Integer amount, String title, String clientIp, String type) {
+    public JSONObject payUnifiedOrder(String orderId, Integer amount, String title, String type) {
         PayUnifiedOrderDTO payUnifiedOrderDTO = new PayUnifiedOrderDTO();
         payUnifiedOrderDTO.setAppid(appId);
         payUnifiedOrderDTO.setMch_id(mchId);
@@ -36,7 +36,7 @@ public class WepayServiceImpl implements WepayService {
         payUnifiedOrderDTO.setBody(title);
         payUnifiedOrderDTO.setNotify_url(notifyUrl);
         payUnifiedOrderDTO.setOut_trade_no(orderId);
-        payUnifiedOrderDTO.setSpbill_create_ip(clientIp);
+//        payUnifiedOrderDTO.setSpbill_create_ip(clientIp);
         payUnifiedOrderDTO.setTotal_fee(amount);
         payUnifiedOrderDTO.setTrade_type(type);
 
@@ -45,8 +45,8 @@ public class WepayServiceImpl implements WepayService {
         String sign = DigestUtils.md5DigestAsHex(toSign.getBytes());
         payUnifiedOrderDTO.setSign(sign);
 
-        JSONObject jsonObject = wepayApi.payUnifiedOrder(payUnifiedOrderDTO);
+        wepayApi.payUnifiedOrder(payUnifiedOrderDTO);
 
-        return jsonObject;
+        return null;
     }
 }

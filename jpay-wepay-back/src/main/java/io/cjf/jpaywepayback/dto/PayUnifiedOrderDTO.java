@@ -1,7 +1,9 @@
 package io.cjf.jpaywepayback.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+@JacksonXmlRootElement(localName = "xml")
 public class PayUnifiedOrderDTO {
     private String appid;
     private String mch_id;
@@ -12,6 +14,8 @@ public class PayUnifiedOrderDTO {
     private String spbill_create_ip;
     private String notify_url;
     private String trade_type;
+    private String openid;
+    private String sign_type;
     private String sign;
 
     public String getAppid() {
@@ -101,9 +105,27 @@ public class PayUnifiedOrderDTO {
                 "&mch_id="+mch_id+
                 "&nonce_str="+nonce_str+
                 "&notify_url="+notify_url+
+                "&openid="+openid+
                 "&out_trade_no="+out_trade_no+
+                "&sign_type="+sign_type+
                 "&spbill_create_ip="+spbill_create_ip+
                 "&total_fee="+total_fee+
                 "&trade_type="+trade_type;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public String getSign_type() {
+        return sign_type;
+    }
+
+    public void setSign_type(String sign_type) {
+        this.sign_type = sign_type;
     }
 }

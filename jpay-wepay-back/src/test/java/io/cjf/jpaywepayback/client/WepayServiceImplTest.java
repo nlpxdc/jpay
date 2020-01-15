@@ -24,8 +24,7 @@ class WepayServiceImplTest {
         String orderId =  appId + "order" + new Date().getTime();
         Integer amount = 1;
         String title = "订单商品" + orderId;
-        String clientIp = "121.76.196.44";
-        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, clientIp, "MWEB");
+        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "MWEB");
         assertNotNull(jsonObject);
     }
 }

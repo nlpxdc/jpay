@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface WepayApi {
 
     @PostMapping(value = "/pay/unifiedorder", consumes = MediaType.APPLICATION_XML_VALUE)
-    JSONObject payUnifiedOrder(@RequestBody PayUnifiedOrderDTO payUnifiedOrderDTO);
+    String payUnifiedOrder(@RequestBody PayUnifiedOrderDTO payUnifiedOrderDTO);
 
 }

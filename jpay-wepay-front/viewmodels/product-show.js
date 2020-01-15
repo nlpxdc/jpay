@@ -5,9 +5,9 @@ var app = new Vue({
         ticket: '',
         wechatConfig: 'unknown',
         supportWepay: 'unknown',
-        prepay_id: 'wx17141736800711da66ae45bf1456919100',
-        signType: 'MD5',
-        payKey: '9f87a21142b6af5b144dbb4ac2077c5b' //to hide, calc in backend
+        prepay_id: '',
+        signType: '',
+        paySign: ''
     },
     computed: {
         currentTime() {
@@ -33,21 +33,21 @@ var app = new Vue({
         },
         package() {
             return 'prepay_id=' + this.prepay_id;
-        },
-        paySign() {
-            const payParams =
-                'appId=' + this.appId
-                + '&nonceStr=' + this.nonceStr
-                + '&package=' + this.package
-                + '&signType=' + this.signType
-                + '&timeStamp=' + this.currentTime
-                + '&key=' + this.payKey;
-
-            const md5Str = md5(payParams);
-            const md5StrUpper = md5Str.toUpperCase();
-
-            return md5StrUpper;
         }
+        // paySign() {
+        //     const payParams =
+        //         'appId=' + this.appId
+        //         + '&nonceStr=' + this.nonceStr
+        //         + '&package=' + this.package
+        //         + '&signType=' + this.signType
+        //         + '&timeStamp=' + this.currentTime
+        //         + '&key=' + this.payKey;
+
+        //     const md5Str = md5(payParams);
+        //     const md5StrUpper = md5Str.toUpperCase();
+
+        //     return md5StrUpper;
+        // }
     },
     mounted() {
         console.log('view mounted');
@@ -149,6 +149,12 @@ var app = new Vue({
                     alert('配置成功');
                 }
             });
+        },
+        handleGetPrepayIdTouch(){
+            console.log('get prepay id touch');
+        },
+        getPrepayId(){
+            
         }
     }
 })
