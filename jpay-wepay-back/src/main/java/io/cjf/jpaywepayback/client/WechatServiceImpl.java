@@ -1,5 +1,6 @@
 package io.cjf.jpaywepayback.client;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +22,9 @@ public class WechatServiceImpl implements WechatService {
 
     @Override
     public JSONObject getAppAccessToken() {
-        JSONObject appAccessTokenJson = wechatApi.getAppAccessToken("client_credential", appId, appKey);
-        return appAccessTokenJson;
+        String jsonStr = wechatApi.getAppAccessToken("client_credential", appId, appKey);
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        return jsonObject;
     }
 
     @Override
@@ -31,7 +33,8 @@ public class WechatServiceImpl implements WechatService {
             JSONObject appAccessTokenJson = getAppAccessToken();
             accessToken = appAccessTokenJson.getString("access_token");
         }
-        JSONObject jsTicketJson = wechatApi.getJsTicket(accessToken, "jsapi");
-        return jsTicketJson;
+        String jsonStr = wechatApi.getJsTicket(accessToken, "jsapi");
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        return jsonObject;
     }
 }

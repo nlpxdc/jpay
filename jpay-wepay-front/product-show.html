@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/vant.css">
     <title>product-show</title>
@@ -23,7 +24,9 @@
 
         <van-button type="primary" @click="handleCheckPay">检查支付</van-button><br>
         支持支付：{{supportWepay}} <br>
-        <van-button type="primary" @click="handleGetPrepayIdTouch">获取 prepay id</van-button><br>
+
+        <van-field v-model="amount" type="digit" label="金额（分）"></van-field><br>
+        <van-button type="primary" @click="handleGetPrepayTouch">获取 prepay</van-button><br>
         prepay id: {{prepay_id}} <br>
         <van-button type="primary" @click="handlePay">支付</van-button><br>
         <br>

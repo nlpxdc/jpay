@@ -30,8 +30,8 @@ public class OrderController {
     @Value("${wepay.payKey}")
     private String payKey;
 
-    @GetMapping(value = "/getPrepay", produces = MediaType.APPLICATION_XML_VALUE)
-    public PrepayDTO getPrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
+    @GetMapping(value = "/getPrepay")
+    public String getPrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
                                @RequestParam(required = false, defaultValue = "MD5") String signType,
                                @RequestParam Long timestamp,
                                @RequestParam String nonce,
@@ -51,8 +51,9 @@ public class OrderController {
         PrepayDTO prepayDTO = new PrepayDTO();
         prepayDTO.setPrepayId(prepay_id);
         prepayDTO.setPaySign(paySign);
+        String jsonString = JSON.toJSONString(prepayDTO);
 
-        return prepayDTO;
+        return jsonString;
     }
 
 }

@@ -7,7 +7,8 @@ var app = new Vue({
         supportWepay: 'unknown',
         prepay_id: '',
         signType: 'MD5',
-        paySign: ''
+        paySign: '',
+        amount: ''
     },
     computed: {
         currentTime() {
@@ -80,6 +81,12 @@ var app = new Vue({
         },
         handlePay() {
             console.log('pay click');
+
+            if (!this.prepay_id) {
+                alert('prepay id 不存在');
+                return;
+            }
+
             wx.chooseWXPay({
                 timestamp: this.currentTime,
                 nonceStr: this.nonceStr,
@@ -150,11 +157,33 @@ var app = new Vue({
                 }
             });
         },
-        handleGetPrepayIdTouch(){
-            console.log('get prepay id touch');
+        handleGetPrepayTouch() {
+            console.log('get prepay touch');
+            if (!this.amount) {
+                alert('amount 不存在');
+                return;
+            }
+            this.getPrepay();
         },
-        getPrepayId(){
-
+        getPrepay() {
+            axios.get('/order/getPrepay', {
+                params: {
+                    amount: this.amount,
+                    signType: this.signType,
+                    timestamp: this.currentTime,
+                    nonce: this.nonceStr,
+                    openid: 'oG_Lp1MOCClUT-2Q5LqOrfq-qcFg'
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+                    const prepay = response.data;
+                    app.prepay_id = prepay.prepayId;
+                    app.paySign = prepay.paySign;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     }
 })
