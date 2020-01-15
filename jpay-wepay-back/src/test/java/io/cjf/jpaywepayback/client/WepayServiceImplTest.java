@@ -1,6 +1,7 @@
 package io.cjf.jpaywepayback.client;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,11 +21,13 @@ class WepayServiceImplTest {
     private String appId;
 
     @Test
-    void payUnifiedOrder() {
-        String orderId =  appId + "order" + new Date().getTime();
+    void payUnifiedOrder() throws JsonProcessingException {
+        String orderId =  appId+"N"+new Date().getTime();
         Integer amount = 1;
         String title = "订单商品" + orderId;
-        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "MWEB");
-        assertNotNull(jsonObject);
+        String openid = "oG_Lp1MOCClUT-2Q5LqOrfq-qcFg";
+        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "JSAPI", openid);
+        String prepay_id = jsonObject.getString("prepay_id");
+        assertNotNull(prepay_id);
     }
 }
