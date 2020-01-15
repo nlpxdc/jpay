@@ -17,14 +17,17 @@
     <div id="app">
 
         <van-button type="primary" @click="handleGetJsTicketTouch">获取 js ticket</van-button><br>
-        {{ticket}}
+        js ticket: {{ticket}} <br>
 
-        <van-button type="primary" @click="handleCheckPay">检查支付</van-button>
-        <van-button type="primary" @click="handlePay">支付</van-button>
+        <van-button type="primary" @click="handleCheckPay">检查支付</van-button><br>
+        <br>
+        <van-button type="primary" @click="handlePay">支付</van-button><br>
+        <br>
 
     </div>
 
     <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/common.js"></script>
     <script src="assets/js/vue.js"></script>
     <script src="assets/js/vant.min.js"></script>
     <script src="assets/js/jweixin-1.4.0.js"></script>

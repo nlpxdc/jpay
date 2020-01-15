@@ -119,8 +119,19 @@ var app = new Vue({
                 }
             });
         },
-        handleGetJsTicketTouch(){
+        handleGetJsTicketTouch() {
             console.log('get js ticket touch');
+            this.getJsTicket();
+        },
+        getJsTicket() {
+            axios.get('/wechat/getJsTicket')
+                .then(function (response) {
+                    console.log(response);
+                    app.ticket = response.data;
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
         }
     }
 })
