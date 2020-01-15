@@ -5,18 +5,14 @@ var app = new Vue({
         ticket: '',
         wechatConfig: 'unknown',
         supportWepay: 'unknown',
-        prepay_id: '',
         signType: 'MD5',
-        paySign: '',
-        amount: ''
+        amount: 1,
+        currentTime: '',
+        nonceStr: '',
+        prepay_id: '',
+        paySign: ''
     },
     computed: {
-        currentTime() {
-            return Date.now();
-        },
-        nonceStr() {
-            return Math.random().toString(16).substr(2);
-        },
         originParams() {
             const originParams =
                 'jsapi_ticket=' + this.ticket
@@ -35,23 +31,11 @@ var app = new Vue({
         package() {
             return 'prepay_id=' + this.prepay_id;
         }
-        // paySign() {
-        //     const payParams =
-        //         'appId=' + this.appId
-        //         + '&nonceStr=' + this.nonceStr
-        //         + '&package=' + this.package
-        //         + '&signType=' + this.signType
-        //         + '&timeStamp=' + this.currentTime
-        //         + '&key=' + this.payKey;
-
-        //     const md5Str = md5(payParams);
-        //     const md5StrUpper = md5Str.toUpperCase();
-
-        //     return md5StrUpper;
-        // }
     },
     mounted() {
         console.log('view mounted');
+        this.currentTime = Date.now();
+        this.nonceStr = Math.random().toString(16).substr(2);
     },
     methods: {
         handleCheckPay() {
@@ -86,6 +70,9 @@ var app = new Vue({
                 alert('prepay id 不存在');
                 return;
             }
+
+            console.log('paySignJS', this.paySignJS);
+            console.log('paySign', this.paySign);
 
             wx.chooseWXPay({
                 timestamp: this.currentTime,

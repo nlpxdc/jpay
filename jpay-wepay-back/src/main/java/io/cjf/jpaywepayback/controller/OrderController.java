@@ -5,21 +5,28 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cjf.jpaywepayback.client.WepayService;
 import io.cjf.jpaywepayback.dto.PrepayDTO;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.util.DigestUtils;
+//import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private WepayService wepayService;
@@ -35,19 +42,20 @@ public class OrderController {
                                @RequestParam(required = false, defaultValue = "MD5") String signType,
                                @RequestParam Long timestamp,
                                @RequestParam String nonce,
-                               @RequestParam String openid) throws JsonProcessingException {
+                               @RequestParam String openid) throws JsonProcessingException, UnsupportedEncodingException {
         String orderId = appId + "N" + new Date().getTime();
         String title = "订单商品" + orderId;
         JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "JSAPI", openid);
         String prepay_id = jsonObject.getString("prepay_id");
         String packageStr = "prepay_id=" + prepay_id;
-        String toSign = "appid=" + appId +
+        String toSign = "appId=" + appId +
                 "&nonceStr=" + nonce +
                 "&package=" + packageStr +
                 "&signType=" + signType +
                 "&timeStamp=" + timestamp +
                 "&key=" + payKey;
-        String paySign = DigestUtils.md5DigestAsHex(toSign.getBytes()).toUpperCase();
+        logger.info("toSgin: {}", toSign);
+        String paySign = DigestUtils.md5Hex(toSign).toUpperCase();
         PrepayDTO prepayDTO = new PrepayDTO();
         prepayDTO.setPrepayId(prepay_id);
         prepayDTO.setPaySign(paySign);
