@@ -6,7 +6,7 @@ var app = new Vue({
         wechatConfig: 'unknown',
         supportWepay: 'unknown',
         prepay_id: '',
-        signType: '',
+        signType: 'MD5',
         paySign: ''
     },
     computed: {
@@ -154,7 +154,7 @@ var app = new Vue({
             console.log('get prepay id touch');
         },
         getPrepayId(){
-            
+
         }
     }
 })
