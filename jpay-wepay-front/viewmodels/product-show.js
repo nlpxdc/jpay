@@ -10,7 +10,8 @@ var app = new Vue({
         currentTime: '',
         nonceStr: '',
         prepay_id: '',
-        paySign: ''
+        paySign: '',
+        openid: localStorage['openid']
     },
     computed: {
         originParams() {
@@ -159,7 +160,7 @@ var app = new Vue({
                     signType: this.signType,
                     timestamp: this.currentTime,
                     nonce: this.nonceStr,
-                    openid: 'oG_Lp1MOCClUT-2Q5LqOrfq-qcFg'
+                    openid: this.openid
                 }
             })
                 .then(function (response) {
