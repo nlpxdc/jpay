@@ -18,7 +18,7 @@ public interface WechatApi {
     String getJsTicket(@RequestParam String access_token,
                        @RequestParam String type);
 
-    @GetMapping("//sns/oauth2/access_token")
+    @GetMapping("/sns/oauth2/access_token")
     String getUserAccessToken(@RequestParam String appid,
                               @RequestParam String secret,
                               @RequestParam String code,

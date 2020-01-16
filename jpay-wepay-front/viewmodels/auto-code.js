@@ -4,6 +4,17 @@ var app = new Vue({
         authcode: '',
         openid: ''
     },
+    mounted(){
+        console.log('view mounted');
+
+        var url = new URL(location.href);
+        console.log(url);
+        this.authcode = url.searchParams.get("code");
+        if (!this.authcode) {
+            alert('auth code 不存在');
+            return;
+        }
+    },
     methods:{
         handleGetOpenidTouch(){
             console.log('get openid touch');
@@ -14,7 +25,7 @@ var app = new Vue({
             this.getOpenidByAuthcode();
         },
         getOpenidByAuthcode(){
-            axios.get('/order/getPrepay', {
+            axios.get('/wechat/getUserBasicInfo', {
                 params: {
                     authcode: this.authcode
                 }

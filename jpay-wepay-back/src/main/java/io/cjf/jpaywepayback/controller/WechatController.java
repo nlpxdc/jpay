@@ -23,9 +23,10 @@ public class WechatController {
     }
 
     @GetMapping("/getUserBasicInfo")
-    public JSONObject getUserBasicInfo(@RequestParam String authcode){
+    public String getUserBasicInfo(@RequestParam String authcode){
         JSONObject jsonObject = wechatService.getUserAccessToken(authcode);
-        return jsonObject;
+        String jsonStr = jsonObject.toJSONString();
+        return jsonStr;
     }
 
 }
