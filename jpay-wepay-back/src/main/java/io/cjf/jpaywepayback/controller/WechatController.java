@@ -15,7 +15,7 @@ public class WechatController {
     private WechatService wechatService;
 
     @GetMapping("/getJsTicket")
-    public String getJsTicket(){
+    public String getJsTicket() throws Exception {
         JSONObject jsTicketJson = wechatService.getJsTicket();
         String ticket = jsTicketJson.getString("ticket");
         return ticket;

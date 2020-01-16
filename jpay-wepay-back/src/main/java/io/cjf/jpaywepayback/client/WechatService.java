@@ -5,5 +5,5 @@ import com.alibaba.fastjson.JSONObject;
 public interface WechatService {
     JSONObject getAppAccessToken();
 
-    JSONObject getJsTicket();
+    JSONObject getJsTicket() throws Exception;
 }

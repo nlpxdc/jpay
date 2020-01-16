@@ -28,10 +28,13 @@ public class WechatServiceImpl implements WechatService {
     }
 
     @Override
-    public JSONObject getJsTicket() {
+    public JSONObject getJsTicket() throws Exception {
         if (accessToken == null){
             JSONObject appAccessTokenJson = getAppAccessToken();
             accessToken = appAccessTokenJson.getString("access_token");
+        }
+        if (accessToken == null){
+            throw new Exception("access token is null");
         }
         String jsonStr = wechatApi.getJsTicket(accessToken, "jsapi");
         JSONObject jsonObject = JSON.parseObject(jsonStr);

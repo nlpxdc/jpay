@@ -32,7 +32,7 @@ class WechatServiceImplTest {
     }
 
     @Test
-    void getJsTicket() {
+    void getJsTicket() throws Exception {
         JSONObject jsTicketJson = wechatService.getJsTicket();
         assertNotNull(jsTicketJson);
         String ticket = jsTicketJson.getString("ticket");
