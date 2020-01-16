@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/vant.css">
+    <title>auto-code</title>
+</head>
+
+<body>
+    <div id="app">
+        auth code: {{authcode}} <br>
+        <van-button type="primary" @click="handleGetOpenidTouch">获取openid</van-button><br>
+        openid: {{openid}} <br>
+    </div>
+
+    <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/vant.min.js"></script>
+    <script src="viewmodels/auto-code.js"></script>
+
+</body>
+
+</html>

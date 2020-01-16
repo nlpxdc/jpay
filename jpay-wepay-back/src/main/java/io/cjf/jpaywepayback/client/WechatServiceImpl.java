@@ -40,4 +40,12 @@ public class WechatServiceImpl implements WechatService {
         JSONObject jsonObject = JSON.parseObject(jsonStr);
         return jsonObject;
     }
+
+    @Override
+    public JSONObject getUserAccessToken(String authcode) {
+        String jsonStr = wechatApi.getUserAccessToken(appId, appKey, authcode, "authorization_code");
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        return jsonObject;
+    }
+
 }

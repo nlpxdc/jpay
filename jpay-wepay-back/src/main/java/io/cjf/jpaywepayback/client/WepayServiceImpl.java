@@ -28,10 +28,10 @@ public class WepayServiceImpl implements WepayService {
     @Autowired
     private WepayApi wepayApi;
 
-    @Value("${wepay.appId}")
+    @Value("${wechat.appId}")
     private String appId;
 
-    @Value("${wepay.appKey}")
+    @Value("${wechat.appKey}")
     private String appKey;
 
     @Value("${wepay.mchId}")

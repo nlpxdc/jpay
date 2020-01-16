@@ -31,7 +31,7 @@ public class OrderController {
     @Autowired
     private WepayService wepayService;
 
-    @Value("${wepay.appId}")
+    @Value("${wechat.appId}")
     private String appId;
 
     @Value("${wepay.payKey}")

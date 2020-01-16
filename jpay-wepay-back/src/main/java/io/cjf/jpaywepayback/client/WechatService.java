@@ -6,4 +6,6 @@ public interface WechatService {
     JSONObject getAppAccessToken();
 
     JSONObject getJsTicket() throws Exception;
+
+    JSONObject getUserAccessToken(String authcode);
 }
