@@ -2,7 +2,7 @@ var app = new Vue({
     el: '#app',
     data: {
         appId: 'wxba004d8c6d611e32', //正式号
-        ticket: '',
+        ticket: localStorage['jsapiTicket'],
         wechatConfig: 'unknown',
         supportWepay: 'unknown',
         signType: 'MD5',
@@ -107,6 +107,7 @@ var app = new Vue({
                 .then(function (response) {
                     console.log(response);
                     app.ticket = response.data;
+                    localStorage['jsapiTicket'] = response.data;
                 })
                 .catch(function (error) {
                     console.error(error);

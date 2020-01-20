@@ -7,4 +7,5 @@ public interface WepayService {
 
     JSONObject payUnifiedOrder(String orderId, Integer amount, String title, String type, String openid) throws JsonProcessingException;
 
+    JSONObject payOrderQuery(String orderId) throws IllegalAccessException, JsonProcessingException;
 }

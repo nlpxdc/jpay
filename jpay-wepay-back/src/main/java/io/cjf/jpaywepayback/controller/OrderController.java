@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.util.DigestUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +38,7 @@ public class OrderController {
     @Value("${wepay.payKey}")
     private String payKey;
 
-    @GetMapping(value = "/getPrepay")
+    @GetMapping(value = "/getPrepay", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
                                @RequestParam(required = false, defaultValue = "MD5") String signType,
                                @RequestParam Long timestamp,
@@ -62,6 +63,12 @@ public class OrderController {
         String jsonString = JSON.toJSONString(prepayDTO);
 
         return jsonString;
+    }
+
+    @GetMapping(value = "/getPayOrderInfo", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getPayOrderInfo(String orderId) throws JsonProcessingException, IllegalAccessException {
+        JSONObject jsonObject = wepayService.payOrderQuery(orderId);
+        return jsonObject.toJSONString();
     }
 
 }
