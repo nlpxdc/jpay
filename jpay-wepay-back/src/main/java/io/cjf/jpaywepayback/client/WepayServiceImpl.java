@@ -3,6 +3,7 @@ package io.cjf.jpaywepayback.client;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import io.cjf.jpaywepayback.dto.PayOrderCloseDTO;
 import io.cjf.jpaywepayback.dto.PayOrderQueryDTO;
 import io.cjf.jpaywepayback.dto.PayUnifiedOrderDTO;
 import io.cjf.jpaywepayback.util.WepayUtil;
@@ -93,6 +94,23 @@ public class WepayServiceImpl implements WepayService {
         String sign = wepayUtil.sign(payOrderQueryDTO);
         payOrderQueryDTO.setSign(sign);
         String xml = wepayApi.payOrderQuery(payOrderQueryDTO);
+        JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
+        return jsonObject;
+    }
+
+    @Override
+    public JSONObject payOrderClose(String orderId) throws IllegalAccessException, JsonProcessingException {
+        PayOrderCloseDTO payOrderCloseDTO = new PayOrderCloseDTO();
+        payOrderCloseDTO.setAppid(appId);
+        payOrderCloseDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        payOrderCloseDTO.setNonce_str(nonce);
+        payOrderCloseDTO.setOut_trade_no(orderId);
+        payOrderCloseDTO.setSign_type("MD5");
+        String sign = wepayUtil.sign(payOrderCloseDTO);
+        payOrderCloseDTO.setSign(sign);
+        String xml = wepayApi.payOrderClose(payOrderCloseDTO);
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
         return jsonObject;
     }

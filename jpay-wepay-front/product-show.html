@@ -32,10 +32,11 @@
         <br>
 
         <van-field v-model="amount" type="digit" label="金额（分）"></van-field><br>
-        <van-button type="primary" @click="handleGetPrepayTouch">获取 prepay</van-button><br>
+        <van-button type="primary" @click="handleGetPrepayTouch">(重新)获取 prepay</van-button><br>
         prepay id: {{prepay_id}} <br>
+        order amount: {{orderAmount}} <br>
         <br>
-        
+
         <van-button type="primary" @click="handlePay">支付</van-button><br>
         <br>
 
@@ -48,7 +49,7 @@
     <script src="assets/js/jweixin-1.4.0.js"></script>
     <script src="assets/js/sha1.js"></script>
     <script src="assets/js/md5.min.js"></script>
-    <script src="viewmodels/product-show.js?202001202056"></script>
+    <script src="viewmodels/product-show.js?202001202120"></script>
 
 </body>
 

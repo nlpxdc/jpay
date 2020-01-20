@@ -1,6 +1,7 @@
 package io.cjf.jpaywepayback.client;
 
 import com.alibaba.fastjson.JSONObject;
+import io.cjf.jpaywepayback.dto.PayOrderCloseDTO;
 import io.cjf.jpaywepayback.dto.PayOrderQueryDTO;
 import io.cjf.jpaywepayback.dto.PayUnifiedOrderDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,5 +17,8 @@ public interface WepayApi {
 
     @PostMapping(value = "/pay/orderquery", consumes = MediaType.APPLICATION_XML_VALUE)
     String payOrderQuery(@RequestBody PayOrderQueryDTO payOrderQueryDTO);
+
+    @PostMapping(value = "/pay/closeorder", consumes = MediaType.APPLICATION_XML_VALUE)
+    String payOrderClose(@RequestBody PayOrderCloseDTO payOrderCloseDTO);
 
 }

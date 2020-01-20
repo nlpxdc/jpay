@@ -7,6 +7,7 @@ var app = new Vue({
         supportWepay: 'unknown',
         signType: 'MD5',
         amount: 1,
+        orderAmount: '',
         currentTime: '',
         nonceStr: '',
         prepay_id: '',
@@ -169,6 +170,7 @@ var app = new Vue({
                     const prepay = response.data;
                     app.prepay_id = prepay.prepayId;
                     app.paySign = prepay.paySign;
+                    app.orderAmount = app.amount;
                 })
                 .catch(function (error) {
                     console.log(error);
