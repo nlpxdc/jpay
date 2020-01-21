@@ -114,4 +114,11 @@ public class OrderController {
         return jsonString;
     }
 
+    @PostMapping(value = "/payReverse", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String payReverse(@RequestParam String orderId) throws JsonProcessingException, IllegalAccessException {
+        final JSONObject jsonObject = wepayService.payReverse(orderId);
+        final String jsonString = jsonObject.toJSONString();
+        return jsonString;
+    }
+
 }

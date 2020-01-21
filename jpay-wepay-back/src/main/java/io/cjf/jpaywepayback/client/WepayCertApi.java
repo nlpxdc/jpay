@@ -3,6 +3,7 @@ package io.cjf.jpaywepayback.client;
 import feign.Client;
 import io.cjf.jpaywepayback.dto.PayDownloadFundflowDTO;
 import io.cjf.jpaywepayback.dto.PayRefundDTO;
+import io.cjf.jpaywepayback.dto.PayReverseDTO;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,9 @@ public interface WepayCertApi {
 
     @PostMapping(value = "/pay/downloadfundflow", consumes = MediaType.APPLICATION_XML_VALUE)
     String payDownloadFundflow(@RequestBody PayDownloadFundflowDTO payDownloadFundflowDTO);
+
+    @PostMapping(value = "/secapi/pay/reverse", consumes = MediaType.APPLICATION_XML_VALUE)
+    String payReverse(@RequestBody PayReverseDTO payReverseDTO);
 
     class Configuration {
 

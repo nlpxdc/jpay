@@ -212,4 +212,20 @@ public class WepayServiceImpl implements WepayService {
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
         return jsonObject;
     }
+
+    @Override
+    public JSONObject payReverse(String orderId) throws IllegalAccessException, JsonProcessingException {
+        final PayReverseDTO payReverseDTO = new PayReverseDTO();
+        payReverseDTO.setAppid(appId);
+        payReverseDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        payReverseDTO.setNonce_str(nonce);
+        payReverseDTO.setOut_trade_no(orderId);
+        final String sign = wepayUtil.sign(payReverseDTO);
+        payReverseDTO.setSign(sign);
+        final String xml = wepayCertApi.payReverse(payReverseDTO);
+        JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
+        return jsonObject;
+    }
 }
