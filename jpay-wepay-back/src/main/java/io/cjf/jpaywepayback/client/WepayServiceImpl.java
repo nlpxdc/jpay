@@ -57,27 +57,33 @@ public class WepayServiceImpl implements WepayService {
     public JSONObject payUnifiedOrder(String orderId,
                                       Integer amount,
                                       String title,
-                                      String type,
-                                      String openid) throws JsonProcessingException {
+                                      String payType,
+                                      String openid,
+                                      String productId) throws JsonProcessingException, IllegalAccessException {
         logger.info("orderId is: {}", orderId);
 
         PayUnifiedOrderDTO payUnifiedOrderDTO = new PayUnifiedOrderDTO();
         payUnifiedOrderDTO.setAppid(appId);
         payUnifiedOrderDTO.setMch_id(mchId);
-        payUnifiedOrderDTO.setBody(title);
         byte[] bytes = secureRandom.generateSeed(16);
         String nonce = DatatypeConverter.printHexBinary(bytes);
         payUnifiedOrderDTO.setNonce_str(nonce);
-        payUnifiedOrderDTO.setSpbill_create_ip("127.0.0.1");
-        payUnifiedOrderDTO.setTrade_type(type);
-        payUnifiedOrderDTO.setNotify_url(notifyUrl);
+
         payUnifiedOrderDTO.setOut_trade_no(orderId);
         payUnifiedOrderDTO.setTotal_fee(amount);
-        payUnifiedOrderDTO.setOpenid(openid);
+        payUnifiedOrderDTO.setBody(title);
+        payUnifiedOrderDTO.setSpbill_create_ip("127.0.0.1");
+        payUnifiedOrderDTO.setNotify_url(notifyUrl);
         payUnifiedOrderDTO.setSign_type("MD5");
-        String toSign = payUnifiedOrderDTO.getToSign();
-        toSign = toSign + "&key=" + payKey;
-        String sign = DigestUtils.md5DigestAsHex(toSign.getBytes()).toUpperCase();
+
+        payUnifiedOrderDTO.setTrade_type(payType);
+        if (payType.equals("JSAPI")){
+            payUnifiedOrderDTO.setOpenid(openid);
+        }else if (payType.equals("NATIVE")){
+            payUnifiedOrderDTO.setProduct_id(productId);
+        }
+
+        final String sign = wepayUtil.sign(payUnifiedOrderDTO);
         payUnifiedOrderDTO.setSign(sign);
         String xml = wepayApi.payUnifiedOrder(payUnifiedOrderDTO);
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);

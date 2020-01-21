@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface WepayService {
 
-    JSONObject payUnifiedOrder(String orderId, Integer amount, String title, String type, String openid) throws JsonProcessingException;
+    JSONObject payUnifiedOrder(String orderId, Integer amount, String title, String payType, String openid, String productId) throws JsonProcessingException, IllegalAccessException;
 
     JSONObject payOrderQuery(String orderId) throws IllegalAccessException, JsonProcessingException;
 

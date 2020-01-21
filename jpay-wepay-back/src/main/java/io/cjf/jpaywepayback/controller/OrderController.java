@@ -33,26 +33,28 @@ public class OrderController {
 
     @GetMapping(value = "/getPrepay", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
-                            @RequestParam(required = false, defaultValue = "MD5") String signType,
+                            @RequestParam(value = "signType", required = false, defaultValue = "MD5") String frontSignType,
                             @RequestParam Long timestamp,
                             @RequestParam String nonce,
-                            @RequestParam String openid) throws JsonProcessingException {
+                            @RequestParam String payType,
+                            @RequestParam(required = false) String openid,
+                            @RequestParam(required = false) String productId) throws JsonProcessingException, IllegalAccessException {
         String orderId = appId + "N" + new Date().getTime();
         String title = "订单商品" + orderId;
-        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "JSAPI", openid);
+        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, payType, openid, productId);
         String prepay_id = jsonObject.getString("prepay_id");
         String packageStr = "prepay_id=" + prepay_id;
-        String toSign = "appId=" + appId +
+        String frontToSign = "appId=" + appId +
                 "&nonceStr=" + nonce +
                 "&package=" + packageStr +
-                "&signType=" + signType +
+                "&signType=" + frontSignType +
                 "&timeStamp=" + timestamp +
                 "&key=" + payKey;
-        logger.info("toSgin: {}", toSign);
-        String paySign = DigestUtils.md5Hex(toSign).toUpperCase();
+        logger.info("frontToSign: {}", frontToSign);
+        String frontPaySign = DigestUtils.md5Hex(frontToSign).toUpperCase();
         PrepayDTO prepayDTO = new PrepayDTO();
         prepayDTO.setPrepayId(prepay_id);
-        prepayDTO.setPaySign(paySign);
+        prepayDTO.setPaySign(frontPaySign);
         String jsonString = JSON.toJSONString(prepayDTO);
 
         return jsonString;

@@ -161,6 +161,7 @@ var app = new Vue({
                     signType: this.signType,
                     timestamp: this.currentTime,
                     nonce: this.nonceStr,
+                    payType: 'JSAPI',
                     openid: this.openid
                 }
             })

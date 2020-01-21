@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.cjf.jpaywepayback.dto.PayUnifiedOrderDTO;
+import io.cjf.jpaywepayback.util.WepayUtil;
 import javafx.util.converter.DateStringConverter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,9 @@ class WepayApiTest {
     @Autowired
     private WepayApi wepayApi;
 
+    @Autowired
+    private WepayUtil wepayUtil;
+
     @BeforeEach
     void setUp() {
     }
@@ -34,7 +38,7 @@ class WepayApiTest {
     }
 
     @Test
-    void payUnifiedOrder() throws JsonProcessingException {
+    void payUnifiedOrder() throws JsonProcessingException, IllegalAccessException {
         PayUnifiedOrderDTO payUnifiedOrderDTO = new PayUnifiedOrderDTO();
         String appId = "wxba004d8c6d611e32";
         payUnifiedOrderDTO.setAppid(appId);
@@ -51,10 +55,7 @@ class WepayApiTest {
         payUnifiedOrderDTO.setTotal_fee(1);
         payUnifiedOrderDTO.setOpenid("oG_Lp1MOCClUT-2Q5LqOrfq-qcFg");
         payUnifiedOrderDTO.setSign_type("MD5");
-        String toSign = payUnifiedOrderDTO.getToSign();
-        String payKey = "";
-        toSign = toSign + "&key=" + payKey;
-        String sign = DigestUtils.md5DigestAsHex(toSign.getBytes()).toUpperCase();
+        final String sign = wepayUtil.sign(payUnifiedOrderDTO);
         payUnifiedOrderDTO.setSign(sign);
         String xml = wepayApi.payUnifiedOrder(payUnifiedOrderDTO);
         XmlMapper xmlMapper = new XmlMapper();

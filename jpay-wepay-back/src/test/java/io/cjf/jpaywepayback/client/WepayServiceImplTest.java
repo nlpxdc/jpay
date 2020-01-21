@@ -21,12 +21,12 @@ class WepayServiceImplTest {
     private String appId;
 
     @Test
-    void payUnifiedOrder() throws JsonProcessingException {
+    void payUnifiedOrder() throws JsonProcessingException, IllegalAccessException {
         String orderId =  appId+"N"+new Date().getTime();
         Integer amount = 1;
         String title = "订单商品" + orderId;
         String openid = "oG_Lp1MOCClUT-2Q5LqOrfq-qcFg";
-        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "JSAPI", openid);
+        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "JSAPI", openid, null);
         String prepay_id = jsonObject.getString("prepay_id");
         assertNotNull(prepay_id);
     }
