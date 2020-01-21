@@ -76,7 +76,10 @@ public class OrderController {
     public String refund(@RequestParam String orderId,
                          @RequestParam Integer totalFee,
                          @RequestParam String refundId,
-                         @RequestParam Integer refundFee) throws JsonProcessingException, IllegalAccessException {
+                         @RequestParam Integer refundFee) throws Exception {
+        if (refundFee > totalFee){
+            throw new Exception("refund fee is larger than total fee");
+        }
         JSONObject jsonObject = wepayService.payRefund(orderId, totalFee, refundId, refundFee);
         String jsonString = jsonObject.toJSONString();
         return jsonString;
