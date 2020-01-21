@@ -3,10 +3,7 @@ package io.cjf.jpaywepayback.client;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import io.cjf.jpaywepayback.dto.PayOrderCloseDTO;
-import io.cjf.jpaywepayback.dto.PayOrderQueryDTO;
-import io.cjf.jpaywepayback.dto.PayRefundDTO;
-import io.cjf.jpaywepayback.dto.PayUnifiedOrderDTO;
+import io.cjf.jpaywepayback.dto.*;
 import io.cjf.jpaywepayback.util.WepayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,6 +136,23 @@ public class WepayServiceImpl implements WepayService {
         String sign = wepayUtil.sign(payRefundDTO);
         payRefundDTO.setSign(sign);
         String xml = wepayCertApi.payRefund(payRefundDTO);
+        JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
+        return jsonObject;
+    }
+
+    @Override
+    public JSONObject payRefundQuery(String orderId) throws IllegalAccessException, JsonProcessingException {
+        final PayRefundQueryDTO payRefundQueryDTO = new PayRefundQueryDTO();
+        payRefundQueryDTO.setAppid(appId);
+        payRefundQueryDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        payRefundQueryDTO.setNonce_str(nonce);
+        payRefundQueryDTO.setOut_trade_no(orderId);
+        payRefundQueryDTO.setSign_type("MD5");
+        final String sign = wepayUtil.sign(payRefundQueryDTO);
+        payRefundQueryDTO.setSign(sign);
+        final String xml = wepayApi.payRefundQuery(payRefundQueryDTO);
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
         return jsonObject;
     }

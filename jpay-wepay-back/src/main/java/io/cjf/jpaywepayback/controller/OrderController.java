@@ -85,4 +85,11 @@ public class OrderController {
         return jsonString;
     }
 
+    @GetMapping(value = "/getRefundInfo", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getRefundInfo(@RequestParam String orderId) throws JsonProcessingException, IllegalAccessException {
+        final JSONObject jsonObject = wepayService.payRefundQuery(orderId);
+        final String jsonString = jsonObject.toJSONString();
+        return jsonString;
+    }
+
 }

@@ -12,4 +12,6 @@ public interface WepayService {
     JSONObject payOrderClose(String orderId) throws IllegalAccessException, JsonProcessingException;
 
     JSONObject payRefund(String orderId, Integer totalFee, String refundId, Integer refundFee) throws IllegalAccessException, JsonProcessingException;
+
+    JSONObject payRefundQuery(String orderId) throws IllegalAccessException, JsonProcessingException;
 }
