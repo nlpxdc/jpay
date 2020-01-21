@@ -92,4 +92,10 @@ public class OrderController {
         return jsonString;
     }
 
+    @GetMapping("/downloadBill")
+    public String downloadBill(String billDate) throws IllegalAccessException {
+        final String result = wepayService.payDownloadBill(billDate);
+        return result;
+    }
+
 }

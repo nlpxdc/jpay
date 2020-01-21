@@ -156,4 +156,20 @@ public class WepayServiceImpl implements WepayService {
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
         return jsonObject;
     }
+
+    @Override
+    public String payDownloadBill(String billDate) throws IllegalAccessException {
+        final PayDownloadBillDTO payDownloadBillDTO = new PayDownloadBillDTO();
+        payDownloadBillDTO.setAppid(appId);
+        payDownloadBillDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        payDownloadBillDTO.setNonce_str(nonce);
+        payDownloadBillDTO.setBill_date(billDate);
+        payDownloadBillDTO.setBill_type("ALL");
+        final String sign = wepayUtil.sign(payDownloadBillDTO);
+        payDownloadBillDTO.setSign(sign);
+        final String result = wepayApi.payDownloadBill(payDownloadBillDTO);
+        return result;
+    }
 }

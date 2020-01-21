@@ -22,4 +22,7 @@ public interface WepayApi {
     @PostMapping(value = "/pay/refundquery", consumes = MediaType.APPLICATION_XML_VALUE)
     String payRefundQuery(@RequestBody PayRefundQueryDTO payRefundQueryDTO);
 
+    @PostMapping(value = "/pay/downloadbill", consumes = MediaType.APPLICATION_XML_VALUE)
+    String payDownloadBill(@RequestBody PayDownloadBillDTO payDownloadBillDTO);
+
 }
