@@ -155,13 +155,12 @@ var app = new Vue({
             this.getPrepay();
         },
         getPrepay() {
-            axios.get('/order/getPrepay', {
+            axios.post('/order/getJsapiPrepay', null, {
                 params: {
                     amount: this.amount,
                     signType: this.signType,
                     timestamp: this.currentTime,
                     nonce: this.nonceStr,
-                    payType: 'JSAPI',
                     openid: this.openid
                 }
             })

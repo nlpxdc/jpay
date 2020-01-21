@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @RestController
@@ -31,17 +30,15 @@ public class OrderController {
     @Value("${wepay.payKey}")
     private String payKey;
 
-    @GetMapping(value = "/getPrepay", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getPrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
-                            @RequestParam(value = "signType", required = false, defaultValue = "MD5") String frontSignType,
-                            @RequestParam Long timestamp,
-                            @RequestParam String nonce,
-                            @RequestParam String payType,
-                            @RequestParam(required = false) String openid,
-                            @RequestParam(required = false) String productId) throws JsonProcessingException, IllegalAccessException {
+    @PostMapping(value = "/getJsapiPrepay", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getJsapiPrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
+                                 @RequestParam(value = "signType", required = false, defaultValue = "MD5") String frontSignType,
+                                 @RequestParam Long timestamp,
+                                 @RequestParam String nonce,
+                                 @RequestParam String openid) throws JsonProcessingException, IllegalAccessException {
         String orderId = appId + "N" + new Date().getTime();
         String title = "订单商品" + orderId;
-        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, payType, openid, productId);
+        JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "JSAPI", openid, null);
         String prepay_id = jsonObject.getString("prepay_id");
         String packageStr = "prepay_id=" + prepay_id;
         String frontToSign = "appId=" + appId +
