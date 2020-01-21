@@ -16,4 +16,6 @@ public interface WepayService {
     JSONObject payRefundQuery(String orderId) throws IllegalAccessException, JsonProcessingException;
 
     String payDownloadBill(String billDate) throws IllegalAccessException;
+
+    String payDownloadFundflow(String billDate) throws IllegalAccessException;
 }

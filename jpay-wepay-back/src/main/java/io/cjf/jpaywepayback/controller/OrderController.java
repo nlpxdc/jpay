@@ -98,4 +98,10 @@ public class OrderController {
         return result;
     }
 
+    @GetMapping("/downloadFundflow")
+    public String downloadFundflow(String billDate) throws IllegalAccessException {
+        final String result = wepayService.payDownloadFundflow(billDate);
+        return result;
+    }
+
 }

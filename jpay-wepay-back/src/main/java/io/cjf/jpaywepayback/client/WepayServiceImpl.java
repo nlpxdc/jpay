@@ -172,4 +172,21 @@ public class WepayServiceImpl implements WepayService {
         final String result = wepayApi.payDownloadBill(payDownloadBillDTO);
         return result;
     }
+
+    @Override
+    public String payDownloadFundflow(String billDate) throws IllegalAccessException {
+        final PayDownloadFundflowDTO payDownloadFundflowDTO = new PayDownloadFundflowDTO();
+        payDownloadFundflowDTO.setAppid(appId);
+        payDownloadFundflowDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        payDownloadFundflowDTO.setNonce_str(nonce);
+        payDownloadFundflowDTO.setAccount_type("Basic");
+        payDownloadFundflowDTO.setBill_date(billDate);
+        payDownloadFundflowDTO.setSign_type("HMAC-SHA256");
+        final String sign = wepayUtil.sign(payDownloadFundflowDTO);
+        payDownloadFundflowDTO.setSign(sign);
+        final String result = wepayCertApi.payDownloadFundflow(payDownloadFundflowDTO);
+        return result;
+    }
 }

@@ -1,5 +1,7 @@
 package io.cjf.jpaywepayback.util;
 
+import org.apache.commons.codec.digest.HmacAlgorithms;
+import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
@@ -38,9 +40,24 @@ public class WepayUtil {
         }
         String toSign = String.join("&", paras);
         toSign = toSign + "&key=" + payKey;
-        String md5Str = DigestUtils.md5DigestAsHex(toSign.getBytes());
-        String md5Upper = md5Str.toUpperCase();
-        return md5Upper;
+
+        Field sign_type = null;
+        try {
+            sign_type = wepayDTO.getClass().getDeclaredField("sign_type");
+            sign_type.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        String sign = "";
+        if(sign_type != null && sign_type.get(wepayDTO).equals("HMAC-SHA256")){
+            final HmacUtils hmacsha256 = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, payKey);
+            sign = hmacsha256.hmacHex(toSign);
+        }else {
+            sign = DigestUtils.md5DigestAsHex(toSign.getBytes());
+        }
+        sign = sign.toUpperCase();
+        return sign;
     }
 
 }

@@ -1,12 +1,9 @@
 package io.cjf.jpaywepayback.client;
 
 import feign.Client;
+import io.cjf.jpaywepayback.dto.PayDownloadFundflowDTO;
 import io.cjf.jpaywepayback.dto.PayRefundDTO;
-import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.ssl.SSLContexts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,18 +16,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.security.*;
-import java.security.cert.CertificateException;
-import java.util.Properties;
 
 @FeignClient(name = "WepayCertApi", url = "${wepay.url}", configuration = WepayCertApi.Configuration.class)
 public interface WepayCertApi {
 
     @PostMapping(value = "/secapi/pay/refund", consumes = MediaType.APPLICATION_XML_VALUE)
     String payRefund(@RequestBody PayRefundDTO payRefundDTO);
+
+    @PostMapping(value = "/pay/downloadfundflow", consumes = MediaType.APPLICATION_XML_VALUE)
+    String payDownloadFundflow(@RequestBody PayDownloadFundflowDTO payDownloadFundflowDTO);
 
     class Configuration {
 
