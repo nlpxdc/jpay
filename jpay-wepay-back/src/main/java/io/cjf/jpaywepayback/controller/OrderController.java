@@ -121,4 +121,11 @@ public class OrderController {
         return jsonString;
     }
 
+    @GetMapping(value = "/authcodeToOpenid", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String authcodeToOpenid(@RequestParam String authcode) throws JsonProcessingException, IllegalAccessException {
+        final JSONObject jsonObject = wepayService.authcodeToOpenid(authcode);
+        final String jsonString = jsonObject.toJSONString();
+        return jsonString;
+    }
+
 }

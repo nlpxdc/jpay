@@ -228,4 +228,20 @@ public class WepayServiceImpl implements WepayService {
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
         return jsonObject;
     }
+
+    @Override
+    public JSONObject authcodeToOpenid(String authcode) throws IllegalAccessException, JsonProcessingException {
+        final AuthcodeToOpenidDTO authcodeToOpenidDTO = new AuthcodeToOpenidDTO();
+        authcodeToOpenidDTO.setAppid(appId);
+        authcodeToOpenidDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        authcodeToOpenidDTO.setNonce_str(nonce);
+        authcodeToOpenidDTO.setAuth_code(authcode);
+        final String sign = wepayUtil.sign(authcodeToOpenidDTO);
+        authcodeToOpenidDTO.setSign(sign);
+        final String xml = wepayApi.authcodeToOpenid(authcodeToOpenidDTO);
+        JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
+        return jsonObject;
+    }
 }

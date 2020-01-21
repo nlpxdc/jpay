@@ -28,4 +28,7 @@ public interface WepayApi {
     @PostMapping(value = "/pay/micropay", consumes = MediaType.APPLICATION_XML_VALUE)
     String payMicropay(@RequestBody PayMicropayDTO payMicropayDTO);
 
+    @PostMapping(value = "/tools/authcodetoopenid", consumes = MediaType.APPLICATION_XML_VALUE)
+    String authcodeToOpenid(@RequestBody AuthcodeToOpenidDTO authcodeToOpenidDTO);
+
 }
