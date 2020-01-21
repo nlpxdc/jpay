@@ -18,4 +18,6 @@ public interface WepayService {
     String payDownloadBill(String billDate) throws IllegalAccessException;
 
     String payDownloadFundflow(String billDate) throws IllegalAccessException;
+
+    JSONObject payMicropay(String orderId, Integer amount, String title, String authcode) throws IllegalAccessException, JsonProcessingException;
 }

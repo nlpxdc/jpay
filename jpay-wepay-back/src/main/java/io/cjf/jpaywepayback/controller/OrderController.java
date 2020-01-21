@@ -33,10 +33,10 @@ public class OrderController {
 
     @GetMapping(value = "/getPrepay", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
-                               @RequestParam(required = false, defaultValue = "MD5") String signType,
-                               @RequestParam Long timestamp,
-                               @RequestParam String nonce,
-                               @RequestParam String openid) throws JsonProcessingException, UnsupportedEncodingException {
+                            @RequestParam(required = false, defaultValue = "MD5") String signType,
+                            @RequestParam Long timestamp,
+                            @RequestParam String nonce,
+                            @RequestParam String openid) throws JsonProcessingException {
         String orderId = appId + "N" + new Date().getTime();
         String title = "订单商品" + orderId;
         JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "JSAPI", openid);
@@ -77,7 +77,7 @@ public class OrderController {
                          @RequestParam Integer totalFee,
                          @RequestParam String refundId,
                          @RequestParam Integer refundFee) throws Exception {
-        if (refundFee > totalFee){
+        if (refundFee > totalFee) {
             throw new Exception("refund fee is larger than total fee");
         }
         JSONObject jsonObject = wepayService.payRefund(orderId, totalFee, refundId, refundFee);
@@ -93,15 +93,25 @@ public class OrderController {
     }
 
     @GetMapping("/downloadBill")
-    public String downloadBill(String billDate) throws IllegalAccessException {
+    public String downloadBill(@RequestParam String billDate) throws IllegalAccessException {
         final String result = wepayService.payDownloadBill(billDate);
         return result;
     }
 
     @GetMapping("/downloadFundflow")
-    public String downloadFundflow(String billDate) throws IllegalAccessException {
+    public String downloadFundflow(@RequestParam String billDate) throws IllegalAccessException {
         final String result = wepayService.payDownloadFundflow(billDate);
         return result;
+    }
+
+    @PostMapping(value = "/payCodePay", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String payCodePay(@RequestParam(required = false, defaultValue = "1") Integer amount,
+                             @RequestParam String authcode) throws JsonProcessingException, IllegalAccessException {
+        String orderId = appId + "N" + new Date().getTime();
+        String title = "订单商品" + orderId;
+        final JSONObject jsonObject = wepayService.payMicropay(orderId, amount, title, authcode);
+        final String jsonString = jsonObject.toJSONString();
+        return jsonString;
     }
 
 }

@@ -25,4 +25,7 @@ public interface WepayApi {
     @PostMapping(value = "/pay/downloadbill", consumes = MediaType.APPLICATION_XML_VALUE)
     String payDownloadBill(@RequestBody PayDownloadBillDTO payDownloadBillDTO);
 
+    @PostMapping(value = "/pay/micropay", consumes = MediaType.APPLICATION_XML_VALUE)
+    String payMicropay(@RequestBody PayMicropayDTO payMicropayDTO);
+
 }

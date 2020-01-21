@@ -189,4 +189,27 @@ public class WepayServiceImpl implements WepayService {
         final String result = wepayCertApi.payDownloadFundflow(payDownloadFundflowDTO);
         return result;
     }
+
+    @Override
+    public JSONObject payMicropay(String orderId, Integer amount, String title, String authcode) throws IllegalAccessException, JsonProcessingException {
+        logger.info("micro pay orderId is: {}", orderId);
+
+        final PayMicropayDTO payMicropayDTO = new PayMicropayDTO();
+        payMicropayDTO.setAppid(appId);
+        payMicropayDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        payMicropayDTO.setNonce_str(nonce);
+        payMicropayDTO.setOut_trade_no(orderId);
+        payMicropayDTO.setTotal_fee(amount);
+        payMicropayDTO.setBody(title);
+        payMicropayDTO.setSpbill_create_ip("127.0.0.1");
+        payMicropayDTO.setAuth_code(authcode);
+        payMicropayDTO.setSign_type("MD5");
+        final String sign = wepayUtil.sign(payMicropayDTO);
+        payMicropayDTO.setSign(sign);
+        final String xml = wepayApi.payMicropay(payMicropayDTO);
+        JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
+        return jsonObject;
+    }
 }
