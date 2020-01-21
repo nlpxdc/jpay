@@ -57,6 +57,16 @@ public class OrderController {
         return jsonString;
     }
 
+    @PostMapping(value = "/getNativePrepay", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getNativePrepay(@RequestParam(required = false, defaultValue = "1") Integer amount,
+                                  @RequestParam(required = false, defaultValue = "multipleProductIds") String productId) throws JsonProcessingException, IllegalAccessException {
+        String orderId = appId + "N" + new Date().getTime();
+        String title = "订单商品" + orderId;
+        final JSONObject jsonObject = wepayService.payUnifiedOrder(orderId, amount, title, "NATIVE", null, productId);
+        final String jsonString = jsonObject.toJSONString();
+        return jsonString;
+    }
+
     @GetMapping(value = "/getPayOrderInfo", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPayOrderInfo(@RequestParam String orderId) throws JsonProcessingException, IllegalAccessException {
         JSONObject jsonObject = wepayService.payOrderQuery(orderId);
