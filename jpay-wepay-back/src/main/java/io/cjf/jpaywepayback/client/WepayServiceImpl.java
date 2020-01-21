@@ -53,6 +53,9 @@ public class WepayServiceImpl implements WepayService {
     @Value("${wepay.notifyUrl}")
     private String notifyUrl;
 
+    @Value("${wepay.refund.notifyUrl}")
+    private String refundNotifyUrl;
+
     @Override
     public JSONObject payUnifiedOrder(String orderId,
                                       Integer amount,
@@ -127,7 +130,7 @@ public class WepayServiceImpl implements WepayService {
         byte[] bytes = secureRandom.generateSeed(16);
         String nonce = DatatypeConverter.printHexBinary(bytes);
         payRefundDTO.setNonce_str(nonce);
-        payRefundDTO.setNotify_url(notifyUrl);
+        payRefundDTO.setNotify_url(refundNotifyUrl);
         payRefundDTO.setOut_trade_no(orderId);
         payRefundDTO.setTotal_fee(totalFee);
         payRefundDTO.setOut_refund_no(refundId);
