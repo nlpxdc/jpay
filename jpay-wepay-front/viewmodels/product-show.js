@@ -146,15 +146,15 @@ var app = new Vue({
                 }
             });
         },
-        handleGetPrepayTouch() {
-            console.log('get prepay touch');
+        handleGetJsapiPrepayTouch() {
+            console.log('get jsapi prepay touch');
             if (!this.amount) {
                 alert('amount 不存在');
                 return;
             }
-            this.getPrepay();
+            this.getJsapiPrepay();
         },
-        getPrepay() {
+        getJsapiPrepay() {
             axios.post('/order/getJsapiPrepay', null, {
                 params: {
                     amount: this.amount,
@@ -172,7 +172,7 @@ var app = new Vue({
                     app.orderAmount = app.amount;
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.error(error);
                 });
         }
     }
