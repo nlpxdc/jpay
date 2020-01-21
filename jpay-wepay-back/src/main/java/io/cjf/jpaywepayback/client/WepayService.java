@@ -24,4 +24,6 @@ public interface WepayService {
     JSONObject payReverse(String orderId) throws IllegalAccessException, JsonProcessingException;
 
     JSONObject authcodeToOpenid(String authcode) throws IllegalAccessException, JsonProcessingException;
+
+    JSONObject getSandboxPaykey(String mchId) throws IllegalAccessException, JsonProcessingException;
 }

@@ -250,4 +250,18 @@ public class WepayServiceImpl implements WepayService {
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
         return jsonObject;
     }
+
+    @Override
+    public JSONObject getSandboxPaykey(String mchId) throws IllegalAccessException, JsonProcessingException {
+        final GetSandboxPaykeyDTO getSandboxPaykeyDTO = new GetSandboxPaykeyDTO();
+        getSandboxPaykeyDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        getSandboxPaykeyDTO.setNonce_str(nonce);
+        final String sign = wepayUtil.sign(getSandboxPaykeyDTO);
+        getSandboxPaykeyDTO.setSign(sign);
+        final String xml = wepayApi.getSandboxPaykey(getSandboxPaykeyDTO);
+        JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
+        return jsonObject;
+    }
 }

@@ -27,6 +27,9 @@ public class OrderController {
     @Value("${wechat.appId}")
     private String appId;
 
+    @Value("${wepay.mchId}")
+    private String mchId;
+
     @Value("${wepay.payKey}")
     private String payKey;
 
@@ -133,6 +136,13 @@ public class OrderController {
     @GetMapping(value = "/authcodeToOpenid", produces = MediaType.APPLICATION_JSON_VALUE)
     public String authcodeToOpenid(@RequestParam String authcode) throws JsonProcessingException, IllegalAccessException {
         final JSONObject jsonObject = wepayService.authcodeToOpenid(authcode);
+        final String jsonString = jsonObject.toJSONString();
+        return jsonString;
+    }
+
+    @GetMapping(value = "/getSandboxPaykey", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getSandboxPaykey() throws JsonProcessingException, IllegalAccessException {
+        final JSONObject jsonObject = wepayService.getSandboxPaykey(mchId);
         final String jsonString = jsonObject.toJSONString();
         return jsonString;
     }

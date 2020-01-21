@@ -1,6 +1,5 @@
 package io.cjf.jpaywepayback.client;
 
-import com.alibaba.fastjson.JSONObject;
 import io.cjf.jpaywepayback.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -30,5 +29,8 @@ public interface WepayApi {
 
     @PostMapping(value = "/tools/authcodetoopenid", consumes = MediaType.APPLICATION_XML_VALUE)
     String authcodeToOpenid(@RequestBody AuthcodeToOpenidDTO authcodeToOpenidDTO);
+
+    @PostMapping(value = "/sandboxnew/pay/getsignkey", consumes = MediaType.APPLICATION_XML_VALUE)
+    String getSandboxPaykey(@RequestBody GetSandboxPaykeyDTO getSandboxPaykeyDTO);
 
 }
