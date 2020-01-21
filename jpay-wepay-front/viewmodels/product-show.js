@@ -47,12 +47,10 @@ var app = new Vue({
                 success: function (res) {
                     console.log('check pay success', res);
                     app.supportWepay = true;
-                    alert('support pay');
                 },
                 fail: function (err) {
                     console.error('check pay error', err);
                     app.supportWepay = false;
-                    alert('not support pay');
                 },
                 complete: function (res) {
                     console.log('check pay complete', res);
@@ -101,14 +99,16 @@ var app = new Vue({
         },
         handleGetJsTicketTouch() {
             console.log('get js ticket touch');
+            localStorage['jsapiTicket'] = '';
+            app.ticket = localStorage['jsapiTicket'];
             this.getJsTicket();
         },
         getJsTicket() {
             axios.get('/wechat/getJsTicket')
                 .then(function (response) {
                     console.log(response);
-                    app.ticket = response.data;
                     localStorage['jsapiTicket'] = response.data;
+                    app.ticket = localStorage['jsapiTicket'];
                 })
                 .catch(function (error) {
                     console.error(error);
@@ -143,7 +143,6 @@ var app = new Vue({
                 console.log('wx ready');
                 if (app.wechatConfig !== false) {
                     app.wechatConfig = true;
-                    alert('配置成功');
                 }
             });
         },

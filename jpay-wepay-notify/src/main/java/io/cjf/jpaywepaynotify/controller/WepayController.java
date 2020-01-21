@@ -25,4 +25,16 @@ public class WepayController {
         handleResultDTO.setReturn_msg("OK");
         return handleResultDTO;
     }
+
+    @PostMapping(value = "/handleRefundResult", produces = MediaType.APPLICATION_XML_VALUE)
+    public HandleResultDTO handleRefundResult(@RequestBody JSONObject refundResult){
+        logger.info("refund result: {}", refundResult);
+
+
+
+        HandleResultDTO handleResultDTO = new HandleResultDTO();
+        handleResultDTO.setReturn_code("SUCCESS");
+        handleResultDTO.setReturn_msg("OK");
+        return handleResultDTO;
+    }
 }

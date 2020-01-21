@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.cjf.jpaywepayback.dto.PayOrderCloseDTO;
 import io.cjf.jpaywepayback.dto.PayOrderQueryDTO;
+import io.cjf.jpaywepayback.dto.PayRefundDTO;
 import io.cjf.jpaywepayback.dto.PayUnifiedOrderDTO;
 import io.cjf.jpaywepayback.util.WepayUtil;
 import org.slf4j.Logger;
@@ -30,6 +31,9 @@ public class WepayServiceImpl implements WepayService {
 
     @Autowired
     private WepayApi wepayApi;
+
+    @Autowired
+    private WepayCertApi wepayCertApi;
 
     @Autowired
     private WepayUtil wepayUtil;
@@ -111,6 +115,27 @@ public class WepayServiceImpl implements WepayService {
         String sign = wepayUtil.sign(payOrderCloseDTO);
         payOrderCloseDTO.setSign(sign);
         String xml = wepayApi.payOrderClose(payOrderCloseDTO);
+        JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
+        return jsonObject;
+    }
+
+    @Override
+    public JSONObject payRefund(String orderId, Integer totalFee, String refundId, Integer refundFee) throws IllegalAccessException, JsonProcessingException {
+        PayRefundDTO payRefundDTO = new PayRefundDTO();
+        payRefundDTO.setAppid(appId);
+        payRefundDTO.setMch_id(mchId);
+        byte[] bytes = secureRandom.generateSeed(16);
+        String nonce = DatatypeConverter.printHexBinary(bytes);
+        payRefundDTO.setNonce_str(nonce);
+        payRefundDTO.setNotify_url(notifyUrl);
+        payRefundDTO.setOut_trade_no(orderId);
+        payRefundDTO.setTotal_fee(totalFee);
+        payRefundDTO.setOut_refund_no(refundId);
+        payRefundDTO.setRefund_fee(refundFee);
+        payRefundDTO.setSign_type("MD5");
+        String sign = wepayUtil.sign(payRefundDTO);
+        payRefundDTO.setSign(sign);
+        String xml = wepayCertApi.payRefund(payRefundDTO);
         JSONObject jsonObject = xmlMapper.readValue(xml, JSONObject.class);
         return jsonObject;
     }

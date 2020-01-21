@@ -2,12 +2,16 @@ package io.cjf.jpaywepayback.client;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WechatServiceImpl implements WechatService {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private WechatApi wechatApi;
@@ -31,6 +35,10 @@ public class WechatServiceImpl implements WechatService {
     public JSONObject getJsTicket() throws Exception {
         if (accessToken == null){
             JSONObject appAccessTokenJson = getAppAccessToken();
+            String errmsg = appAccessTokenJson.getString("errmsg");
+            if (errmsg != null && !errmsg.isEmpty()){
+                logger.info("errmsg is: {}", errmsg);
+            }
             accessToken = appAccessTokenJson.getString("access_token");
         }
         if (accessToken == null){
@@ -38,6 +46,8 @@ public class WechatServiceImpl implements WechatService {
         }
         String jsonStr = wechatApi.getJsTicket(accessToken, "jsapi");
         JSONObject jsonObject = JSON.parseObject(jsonStr);
+        String ticket = jsonObject.getString("ticket");
+        logger.info("jsapi ticket is: {}", ticket);
         return jsonObject;
     }
 

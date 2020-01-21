@@ -10,14 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.util.DigestUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @RestController
@@ -72,6 +68,16 @@ public class OrderController {
     @PostMapping(value = "/closePayOrder", produces = MediaType.APPLICATION_JSON_VALUE)
     public String closePayOrder(@RequestParam String orderId) throws JsonProcessingException, IllegalAccessException {
         JSONObject jsonObject = wepayService.payOrderClose(orderId);
+        String jsonString = jsonObject.toJSONString();
+        return jsonString;
+    }
+
+    @PostMapping(value = "/refund", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String refund(@RequestParam String orderId,
+                         @RequestParam Integer totalFee,
+                         @RequestParam String refundId,
+                         @RequestParam Integer refundFee) throws JsonProcessingException, IllegalAccessException {
+        JSONObject jsonObject = wepayService.payRefund(orderId, totalFee, refundId, refundFee);
         String jsonString = jsonObject.toJSONString();
         return jsonString;
     }
