@@ -14,8 +14,13 @@
         <el-input v-model="amount" placeholder="请输入金额"></el-input>
         <el-button type="primary" @click="handleBuyClick">立即购买</el-button>
         <el-button type="primary" @click="handleMobileBuyClick">手机购买</el-button>
+        <el-button type="primary" @click="handleGeneratePayQRCodeClick">（重新）生成支付二维码</el-button>
+        <br>
+        code url: {{codeUrl}} <br>
+        <div id="qrcode"></div>
     </div>
 
+    <script src="assets/js/qrcode.min.js"></script>
     <script src="assets/js/axios.min.js"></script>
     <script src="assets/js/common.js?202001072021"></script>
     <script src="assets/js/vue.js"></script>
